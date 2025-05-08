@@ -77,38 +77,42 @@ public class UserServiceImpl implements UserService {
 
         @Override
     public UserResDTO updateUser(UUID id, UserReqDTO userReqDTO) {
-        // Validate input first
-        validator.validate(userReqDTO);
+        try{
+            // Validate input first
+            validator.validate(userReqDTO);
 
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+            User existingUser = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Check if new email/phone conflicts with others
-        if (userReqDTO.getEmail() != null &&
-                !userReqDTO.getEmail().equals(existingUser.getEmail()) &&
-                userRepository.existsByEmail(userReqDTO.getEmail())) {
-            throw new InvalidRequestException("Email already in use");
+            // Check if new email/phone conflicts with others
+            if (userReqDTO.getEmail() != null &&
+                    !userReqDTO.getEmail().equals(existingUser.getEmail()) &&
+                    userRepository.existsByEmail(userReqDTO.getEmail())) {
+                throw new InvalidRequestException("Email already in use");
+            }
+
+            if (userReqDTO.getPhoneNumber() != null &&
+                    !userReqDTO.getPhoneNumber().equals(existingUser.getPhoneNumber()) &&
+                    userRepository.existsByPhoneNumber(userReqDTO.getPhoneNumber())) {
+                throw new InvalidRequestException("Phone number already in use");
+            }
+
+            // Update fields
+            existingUser.setFirstName(userReqDTO.getFirstName());
+            existingUser.setLastName(userReqDTO.getLastName());
+            existingUser.setEmail(userReqDTO.getEmail());
+            existingUser.setPhoneNumber(userReqDTO.getPhoneNumber());
+
+            // Only update password if provided
+            if (userReqDTO.getPassword() != null) {
+                existingUser.setPassword(passwordEncoder.encode(userReqDTO.getPassword()));
+            }
+
+            User updatedUser = userRepository.save(existingUser);
+            return modelMapper.map(updatedUser, UserResDTO.class);
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
         }
-
-        if (userReqDTO.getPhoneNumber() != null &&
-                !userReqDTO.getPhoneNumber().equals(existingUser.getPhoneNumber()) &&
-                userRepository.existsByPhoneNumber(userReqDTO.getPhoneNumber())) {
-            throw new InvalidRequestException("Phone number already in use");
-        }
-
-        // Update fields
-        existingUser.setFirstName(userReqDTO.getFirstName());
-        existingUser.setLastName(userReqDTO.getLastName());
-        existingUser.setEmail(userReqDTO.getEmail());
-        existingUser.setPhoneNumber(userReqDTO.getPhoneNumber());
-
-        // Only update password if provided
-        if (userReqDTO.getPassword() != null) {
-            existingUser.setPassword(passwordEncoder.encode(userReqDTO.getPassword()));
-        }
-
-        User updatedUser = userRepository.save(existingUser);
-        return modelMapper.map(updatedUser, UserResDTO.class);
     }
 
     @Override

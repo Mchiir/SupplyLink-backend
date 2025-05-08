@@ -51,6 +51,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String loginUser(AuthReq authReq) {
+        try {
         // Validate request first
         authReqValidator.validate(authReq);
 
@@ -61,21 +62,19 @@ public class AuthServiceImpl implements AuthService {
         if(!validateLoginIdentifier(loginIdentifier))
             throw new InvalidRequestException("Invalid email or phone number");
 
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginIdentifier,
+                        authReq.getPassword()
+                )
+        );
 
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginIdentifier,
-                            authReq.getPassword()
-                    )
-            );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtTokenProvider.generateToken(authentication);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = jwtTokenProvider.generateToken(authentication);
-
-            return token;
+        return token;
         } catch (Exception ex) {
-            throw new InvalidRequestException("Invalid login credentials");
+            throw new InvalidRequestException(ex.getMessage());
         }
     }
 
@@ -122,6 +121,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserResDTO registerUser(UserReqDTO userReqDTO) {
+        try {
         // Validate registration data
         userReqDTOValidator.validate(userReqDTO);
 
@@ -145,12 +145,14 @@ public class AuthServiceImpl implements AuthService {
         newUser.setRoles(Set.of(new Role("ROLE_USER"))); // Default role
         newUser.setPassword(passwordEncoder.encode(userReqDTO.getPassword()));
 
-        try {
-            User savedUser = userRepository.save(newUser);
-            return modelMapper.map(savedUser, UserResDTO.class);
+
+        User savedUser = userRepository.save(newUser);
+        return modelMapper.map(savedUser, UserResDTO.class);
         } catch (DataIntegrityViolationException ex) {
             throw new InvalidRequestException("Registration failed: " +
                     ex.getMostSpecificCause().getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

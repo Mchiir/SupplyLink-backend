@@ -1,6 +1,7 @@
 package com.supplylink.controllers;
 
 import com.supplylink.dtos.*;
+import com.supplylink.exceptions.InvalidRequestException;
 import com.supplylink.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,22 @@ public class AuthController {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(ApiResponse.success("User registered successfully", registeredUser));
-        } catch (RuntimeException ex) {
+        } catch (InvalidRequestException e) {
+            // Handle custom exceptions (e.g., InvalidRequestException for email already in use)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(ApiResponse.error("Registration failed: " + ex.getMessage()));
+                    .body(ApiResponse.error("Registration failed: " + e.getMessage()));
+        } catch (Exception e) {
+            // Handle other exceptions (e.g., unexpected errors)
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("An unexpected error occurred: " + e.getMessage()));
         }
     }
 
     // Login User
     @PostMapping("/loginUser")
-    public ResponseEntity<ApiResponse<AuthRes>> login(@RequestBody AuthReq authReq) {
+    public ResponseEntity<ApiResponse<AuthRes>> login(@Valid @RequestBody AuthReq authReq) {
         try {
             String token = authService.loginUser(authReq);
 
