@@ -22,6 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String loginIdentifier) throws UsernameNotFoundException {
         User user = resolveUserByIdentifier(loginIdentifier);
+        if (user == null) throw new UsernameNotFoundException(loginIdentifier);
 
         Set<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
@@ -35,23 +36,28 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private User resolveUserByIdentifier(String identifier) {
+        String email = "", phoneNumber = "";
+
         if (identifier.contains(":")) {
-            String[] parts = identifier.split(":");
-            if (parts.length != 2) {
-                throw new UsernameNotFoundException("Invalid login identifier format: expected email:phone");
+            String[] cridentialsArray = identifier.split(":", -1); // preserve empty parts
+
+            if (cridentialsArray.length == 2) {
+                email = cridentialsArray[0].trim();
+                phoneNumber = cridentialsArray[1].trim();
+
+                if (!email.isEmpty() && !phoneNumber.isEmpty()) {
+                    return userRepository.findByEmailAndPhoneNumber(email, phoneNumber)
+                            .orElseThrow(() -> new UsernameNotFoundException("User not found with email and phone number combination"));
+                } else if (!email.isEmpty()) {
+                    return userRepository.findByEmail(email)
+                            .orElseThrow(() -> new UsernameNotFoundException("User not found with that email"));
+                } else if (!phoneNumber.isEmpty()) {
+                    return userRepository.findByPhoneNumber(phoneNumber)
+                            .orElseThrow(() -> new UsernameNotFoundException("User not found with that phone"));
+                }
             }
-
-            String email = parts[0].trim();
-            String phone = parts[1].trim();
-
-            return userRepository.findByEmailAndPhoneNumber(email, phone)
-                    .orElseThrow(() ->
-                            new UsernameNotFoundException("User not found with email and phone number combination"));
-        } else {
-            return userRepository.findByEmail(identifier)
-                    .or(() -> userRepository.findByPhoneNumber(identifier))
-                    .orElseThrow(() ->
-                            new UsernameNotFoundException("User not found with email or phone: " + identifier));
         }
+
+        throw new UsernameNotFoundException("Invalid login identifier format: " + identifier);
     }
 }

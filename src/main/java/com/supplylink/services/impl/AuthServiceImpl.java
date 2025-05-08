@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Set;
 
 @Service
@@ -53,17 +54,18 @@ public class AuthServiceImpl implements AuthService {
         // Validate request first
         authReqValidator.validate(authReq);
 
-        String identifier = buildIdentifier(authReq.getEmail(), authReq.getPhoneNumber());
-        String password = authReq.getPassword();
+        String loginIdentifier = buildIdentifier(authReq.getEmail(), authReq.getPhoneNumber());
 
-        String resolvedIdentifier = resolveIdentifier(identifier);
+        System.out.println("Login identifier: "+ loginIdentifier);
 
-        System.out.println("Login identifier: "+ resolvedIdentifier);
+        if(!validateLoginIdentifier(loginIdentifier))
+            throw new InvalidRequestException("Invalid email or phone number");
+
 
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            resolvedIdentifier,
+                            loginIdentifier,
                             authReq.getPassword()
                     )
             );
@@ -75,6 +77,47 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception ex) {
             throw new InvalidRequestException("Invalid login credentials");
         }
+    }
+
+    private String buildIdentifier(String email, String phone) {
+        email = (email != null) ? email.trim() : "";
+        phone = (phone != null) ? phone.trim() : "";
+
+        if (!email.isEmpty() && !phone.isEmpty()) {
+            return email + ":" + phone;  // both
+        } else if (!email.isEmpty()) {
+            return email + ":";          // only email
+        } else if (!phone.isEmpty()) {
+            return ":" + phone;          // only phone
+        } else {
+            return "";                   // neither
+        }
+    }
+
+
+    private boolean validateLoginIdentifier(String loginIdentifier) {
+        String email = "", phoneNumber = "";
+
+        if (loginIdentifier.contains(":")) {
+            String[] parts = loginIdentifier.split(":", -1); // preserve empty trailing values
+
+            if (parts.length == 2) {
+                email = parts[0].trim();
+                phoneNumber = parts[1].trim();
+            } else {
+                throw new InvalidRequestException("Malformed login identifier: " + loginIdentifier);
+            }
+        }
+
+        if (!email.isEmpty() && !phoneNumber.isEmpty()) {
+            return userRepository.existsByEmailAndPhoneNumber(email, phoneNumber);
+        } else if (!email.isEmpty()) {
+            return userRepository.existsByEmail(email);
+        } else if (!phoneNumber.isEmpty()) {
+            return userRepository.existsByPhoneNumber(phoneNumber);
+        }
+
+        return false;
     }
 
     @Override
@@ -109,32 +152,5 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidRequestException("Registration failed: " +
                     ex.getMostSpecificCause().getMessage());
         }
-    }
-
-    private String buildIdentifier(String email, String phone) {
-        return (email == null ? "" : email) + ":" + (phone == null ? "" : phone);
-    }
-    private String resolveIdentifier(String identifier) {
-        String[] parts = identifier.split(":");
-        String email = parts.length > 0 ? parts[0] : null;
-        String phone = parts.length > 1 ? parts[1] : null;
-
-        User user = null;
-
-        if (email != null && !email.isBlank()) {
-            user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new InvalidRequestException("User not found by email"));
-        }
-        if (user == null && phone != null && !phone.isBlank()) {
-            user = userRepository.findByPhoneNumber(phone)
-                    .orElseThrow(() -> new InvalidRequestException("User not found by phone number"));
-        }
-
-        if (user == null) {
-            throw new InvalidRequestException("No user found with provided email or phone");
-        }
-
-        // Return the identifier that matched
-        return email != null && user.getEmail().equals(email) ? email : phone;
     }
 }

@@ -1,9 +1,6 @@
 package com.supplylink.controllers;
 
-import com.supplylink.dtos.AuthReq;
-import com.supplylink.dtos.AuthRes;
-import com.supplylink.dtos.UserReqDTO;
-import com.supplylink.dtos.UserResDTO;
+import com.supplylink.dtos.*;
 import com.supplylink.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,25 +20,35 @@ public class AuthController {
 
     // Register User
     @PostMapping("/registerUser")
-    public ResponseEntity<?> register(@Valid @RequestBody UserReqDTO userReqDTO) {
+    public ResponseEntity<ApiResponse<UserResDTO>> register(@Valid @RequestBody UserReqDTO userReqDTO) {
         try {
             UserResDTO registeredUser = authService.registerUser(userReqDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("User registered successfully", registeredUser));
         } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error("Registration failed: " + ex.getMessage()));
         }
     }
 
-    // login User
+    // Login User
     @PostMapping("/loginUser")
-    public ResponseEntity<AuthRes> login(@RequestBody AuthReq authReq) {
+    public ResponseEntity<ApiResponse<AuthRes>> login(@RequestBody AuthReq authReq) {
+        try {
+            String token = authService.loginUser(authReq);
 
-        String token = authService.loginUser(authReq);
+            var authRes = new AuthRes();
+            authRes.setAccessToken(token);
 
-        var authRes = new AuthRes();
-        authRes.setAccessToken(token);
-
-        //03 - Return the response to the user
-        return new ResponseEntity<>(authRes, HttpStatus.OK);
+            return ResponseEntity.ok(
+                    ApiResponse.success("Login successful", authRes)
+            );
+        } catch (RuntimeException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("Login failed: " + ex.getMessage()));
+        }
     }
 }

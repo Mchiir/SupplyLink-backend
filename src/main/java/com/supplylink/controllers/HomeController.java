@@ -1,17 +1,24 @@
 package com.supplylink.controllers;
 
+import com.supplylink.dtos.ApiResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
+
     @GetMapping("/")
-    public String home() {
-        return "Welcome to Spring Security";
+    public ResponseEntity<ApiResponse<String>> home() {
+        return ResponseEntity.ok(
+                ApiResponse.success("Welcome to SupplyLink backend", null)
+        );
     }
 
     @GetMapping("/error")
-    public String error_handler() {
-        return "An error occurred, this is a fallback message";
+    public ResponseEntity<ApiResponse<String>> errorHandler() {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiResponse.error("An error occurred, this is a fallback message"));
     }
 }

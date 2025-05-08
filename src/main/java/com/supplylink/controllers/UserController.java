@@ -1,5 +1,6 @@
 package com.supplylink.controllers;
 
+import com.supplylink.dtos.ApiResponse;
 import com.supplylink.dtos.UserReqDTO;
 import com.supplylink.dtos.UserResDTO;
 import com.supplylink.services.UserService;
@@ -24,38 +25,45 @@ public class UserController {
 
     // Get All Users
     @GetMapping
-    public ResponseEntity<List<UserResDTO>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<ApiResponse<List<UserResDTO>>> getAllUsers() {
+        List<UserResDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
     }
 
     // Get Single User
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<ApiResponse<UserResDTO>> getUserById(@PathVariable UUID id) {
         try {
-            return ResponseEntity.ok(userService.getUserById(id));
+            UserResDTO user = userService.getUserById(id);
+            return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", user));
         } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.error("User not found: " + ex.getMessage()));
         }
     }
 
     // Update User
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable UUID id, @Valid @RequestBody UserReqDTO userReqDTO) {
+    public ResponseEntity<ApiResponse<UserResDTO>> updateUser(@PathVariable UUID id,
+                                                              @Valid @RequestBody UserReqDTO userReqDTO) {
         try {
-            return ResponseEntity.ok(userService.updateUser(id, userReqDTO));
+            UserResDTO updatedUser = userService.updateUser(id, userReqDTO);
+            return ResponseEntity.ok(ApiResponse.success("User updated successfully", updatedUser));
         } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.error("Update failed: " + ex.getMessage()));
         }
     }
 
     // Delete User
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable UUID id) {
         try {
             userService.deleteUser(id);
-            return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+            return ResponseEntity.ok(ApiResponse.success("User deleted successfully", null));
         } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.error("Deletion failed: " + ex.getMessage()));
         }
     }
 }
