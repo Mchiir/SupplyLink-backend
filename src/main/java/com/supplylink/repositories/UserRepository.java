@@ -1,17 +1,21 @@
 package com.supplylink.repositories;
 
 import com.supplylink.models.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsername(String username);
+public interface UserRepository extends CrudRepository<User, UUID> {
     Optional<User> findByEmail(String email);
+    Optional<User> findByPhoneNumber(String phoneNumber);
+    Optional<User> findByFirstNameAndLastName(String firstName, String lastName);
+    Optional<User> findByEmailAndPhoneNumber(String email, String phoneNumber);
 
-    List<User> findByRole(String role);
-    List<User> findByIsActiveTrue();
+    boolean existsByEmail(@NotBlank String email);
+    boolean existsByPhoneNumber(@NotBlank String phoneNumber);
+    boolean existsByEmailAndPhoneNumber(@NotBlank String email, String phoneNumber);
 }
