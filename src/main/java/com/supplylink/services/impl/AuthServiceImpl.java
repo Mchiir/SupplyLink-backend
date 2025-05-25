@@ -1,7 +1,10 @@
 package com.supplylink.services.impl;
 
 import com.supplylink.auth.JwtTokenProvider;
-import com.supplylink.dtos.*;
+import com.supplylink.dtos.req.AuthReq;
+import com.supplylink.dtos.LocationDTO;
+import com.supplylink.dtos.req.UserReqDTO;
+import com.supplylink.dtos.res.UserResDTO;
 import com.supplylink.exceptions.InvalidRequestException;
 import com.supplylink.models.Location;
 import com.supplylink.models.Role;
@@ -19,7 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Set;
 
 @Service

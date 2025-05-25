@@ -1,6 +1,10 @@
 package com.supplylink.controllers;
 
-import com.supplylink.dtos.*;
+import com.supplylink.dtos.req.AuthReq;
+import com.supplylink.dtos.req.UserReqDTO;
+import com.supplylink.dtos.res.ApiResponse;
+import com.supplylink.dtos.res.AuthRes;
+import com.supplylink.dtos.res.UserResDTO;
 import com.supplylink.exceptions.InvalidRequestException;
 import com.supplylink.services.AuthService;
 import jakarta.validation.Valid;

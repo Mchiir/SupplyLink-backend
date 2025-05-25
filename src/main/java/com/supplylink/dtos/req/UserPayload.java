@@ -1,4 +1,4 @@
-package com.supplylink.dtos;
+package com.supplylink.dtos.req;
 
 public class UserPayload {
     private String email;

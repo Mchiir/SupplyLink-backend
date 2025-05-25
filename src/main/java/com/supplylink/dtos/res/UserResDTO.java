@@ -1,4 +1,4 @@
-package com.supplylink.dtos;
+package com.supplylink.dtos.res;
 
 import com.supplylink.models.Location;
 

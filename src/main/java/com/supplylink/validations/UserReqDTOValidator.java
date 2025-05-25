@@ -1,6 +1,6 @@
 package com.supplylink.validations;
 
-import com.supplylink.dtos.UserReqDTO;
+import com.supplylink.dtos.req.UserReqDTO;
 import com.supplylink.exceptions.InvalidRequestException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

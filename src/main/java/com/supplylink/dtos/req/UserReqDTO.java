@@ -1,5 +1,6 @@
-package com.supplylink.dtos;
+package com.supplylink.dtos.req;
 
+import com.supplylink.dtos.LocationDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

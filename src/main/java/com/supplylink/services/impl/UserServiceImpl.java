@@ -1,7 +1,7 @@
 package com.supplylink.services.impl;
 
-import com.supplylink.dtos.UserReqDTO;
-import com.supplylink.dtos.UserResDTO;
+import com.supplylink.dtos.req.UserReqDTO;
+import com.supplylink.dtos.res.UserResDTO;
 import com.supplylink.validations.UserReqDTOValidator;
 import com.supplylink.exceptions.InvalidRequestException;
 import com.supplylink.models.User;

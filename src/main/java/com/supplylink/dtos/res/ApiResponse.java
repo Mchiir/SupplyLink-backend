@@ -1,4 +1,4 @@
-package com.supplylink.dtos;
+package com.supplylink.dtos.res;
 
 public class ApiResponse<T> {
     private boolean success;

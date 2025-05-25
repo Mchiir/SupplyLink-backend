@@ -1,8 +1,8 @@
 package com.supplylink.controllers;
 
-import com.supplylink.dtos.ApiResponse;
-import com.supplylink.dtos.UserReqDTO;
-import com.supplylink.dtos.UserResDTO;
+import com.supplylink.dtos.res.ApiResponse;
+import com.supplylink.dtos.req.UserReqDTO;
+import com.supplylink.dtos.res.UserResDTO;
 import com.supplylink.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
