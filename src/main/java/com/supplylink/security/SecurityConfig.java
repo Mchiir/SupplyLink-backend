@@ -2,7 +2,6 @@ package com.supplylink.security;
 
 import com.supplylink.auth.JwtAuthenticationEntryPoint;
 import com.supplylink.auth.JwtAuthenticationFilter;
-import com.supplylink.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,18 +24,12 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 @EnableMethodSecurity // required for method's security anotations
 public class SecurityConfig {
 
-    private final UserRepository userRepository;
-    private final UserDetailsService userDetailsService;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAuthenticationFilter authenticationFilter;
 
     public SecurityConfig(
-            UserRepository userRepository,
-            UserDetailsService userDetailsService,
             JwtAuthenticationEntryPoint authenticationEntryPoint,
             JwtAuthenticationFilter authenticationFilter) {
-        this.userRepository = userRepository;
-        this.userDetailsService = userDetailsService;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.authenticationFilter = authenticationFilter;
     }
@@ -56,26 +48,17 @@ public class SecurityConfig {
                             "/",
                             "/swagger-ui/**",
                             "/v3/api-docs",
+                            "/v3/api-docs/**",
                             "/manage/health",
                             "/manage/info"
                     ).permitAll();
 
 //                    authorize.requestMatchers("/manage/**").hasRole("ADMIN");
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                    authorize.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs").permitAll();
+                    authorize.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll();
                     authorize.anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults());
-
-        // Add this to exclude actuator endpoints from JWT filter
-        http.securityMatcher(new NegatedRequestMatcher(
-                new OrRequestMatcher(
-                        new AntPathRequestMatcher("/api/auth/**"),
-                        new AntPathRequestMatcher("/manage/health"),
-                        new AntPathRequestMatcher("/manage/info"),
-                        new AntPathRequestMatcher("/swagger-ui/**"),
-                        new AntPathRequestMatcher("/v3/api-docs/**")
-                )));
 
         http.exceptionHandling(exception -> exception
                 .authenticationEntryPoint(authenticationEntryPoint));

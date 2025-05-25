@@ -82,15 +82,11 @@ public class AuthServiceImpl implements AuthService {
         email = (email != null) ? email.trim() : "";
         phone = (phone != null) ? phone.trim() : "";
 
-        if (!email.isEmpty() && !phone.isEmpty()) {
-            return email + ":" + phone;  // both
-        } else if (!email.isEmpty()) {
-            return email + ":";          // only email
-        } else if (!phone.isEmpty()) {
-            return ":" + phone;          // only phone
-        } else {
-            return "";                   // neither
-        }
+        if (!email.isEmpty() && !phone.isEmpty()) return email + ":" + phone;  // both
+        if (!email.isEmpty()) return email + ":";          // only email
+        if (!phone.isEmpty()) return ":" + phone;          // only phone
+
+        throw new IllegalArgumentException("Neither of email or password passed");                  // neither
     }
 
 
