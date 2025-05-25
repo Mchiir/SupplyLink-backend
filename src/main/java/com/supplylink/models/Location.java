@@ -22,6 +22,11 @@ public class Location {
         this.country = country;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Location district=%s, province=%s, country=%s", district, province, country);
+    }
+
     public UUID getId() {
         return id;
     }

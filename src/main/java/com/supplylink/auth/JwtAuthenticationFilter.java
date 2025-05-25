@@ -1,5 +1,6 @@
 package com.supplylink.auth;
 
+import com.supplylink.services.impl.AuthServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -57,9 +58,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)){
             // get email from token
             Claims claims = jwtTokenProvider.getAllClaimsFromToken(token);
-            String email = claims.getSubject();
+//            String userId = claims.getSubject();
+            String email = claims.get("email", String.class);
+            String phoneNumber = claims.get("phoneNumber", String.class);
+            String userIdentifier = buildIdentifier(email, phoneNumber);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userIdentifier);
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails,
@@ -84,5 +88,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         return null;
+    }
+
+    public String buildIdentifier(String email, String phone) {
+        email = (email != null) ? email.trim() : "";
+        phone = (phone != null) ? phone.trim() : "";
+
+        if (!email.isEmpty() && !phone.isEmpty()) return email + ":" + phone;  // both
+        if (!email.isEmpty()) return email + ":";          // only email
+        if (!phone.isEmpty()) return ":" + phone;          // only phone
+
+        throw new IllegalArgumentException("Neither of email or password passed");                  // neither
     }
 }

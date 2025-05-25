@@ -140,7 +140,8 @@ public class AuthServiceImpl implements AuthService {
         // Create new user
         User newUser = modelMapper.map(userReqDTO, User.class);
         newUser.setLocation(location);
-        newUser.setRoles(Set.of(new Role("ROLE_USER"))); // Default role
+        var regularUserRole =  new Role("ROLE_USER");
+        newUser.setRoles(Set.of(regularUserRole)); // Default role
         newUser.setPassword(passwordEncoder.encode(userReqDTO.getPassword()));
 
 

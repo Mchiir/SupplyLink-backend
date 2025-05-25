@@ -23,6 +23,11 @@ public class UserResDTO {
         this.roles = roles;
     }
 
+    @Override
+    public String toString() {
+        return String.format("User firstname=%s, lastname=%s, email=%s, location=%s", firstName, lastName, email, location);
+    }
+
     // Getters and setters
     public String getFirstName() {
         return firstName;
