@@ -36,3 +36,5 @@ build/
 env.properties
 .env
 admin_query_seeder.sql
+/src/main/java/com/supplylink/controllers/AdminSeeder.java
+
