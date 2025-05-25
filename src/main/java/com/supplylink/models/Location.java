@@ -2,12 +2,14 @@ package com.supplylink.models;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "locations")
 public class Location {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     private String district;
     private String province;
@@ -20,7 +22,7 @@ public class Location {
         this.country = country;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

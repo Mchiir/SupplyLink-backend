@@ -1,0 +1,50 @@
+[
+  {
+    "firstName": "mugisha",
+    "lastName": "chrispin",
+    "email": "mugishachrispin@gmail.com",
+    "phoneNumber": "",
+    "password": "mugishachrispin",
+    "locationDTO": {
+      "district": "nyarugenge",
+      "province": "kigali",
+      "country": "Rwanda"
+    }
+  },
+  {
+    "firstName": "root",
+    "lastName": "root",
+    "email": "root@gmail.com",
+    "phoneNumber": "0781234567",
+    "password": "root@123",
+    "locationDTO": {
+      "district": "nyabihu",
+      "province": "west",
+      "country": "Rwanda"
+    }
+  },
+  {
+    "firstName": "test",
+    "lastName": "test",
+    "email": "",
+    "phoneNumber": "0781234568",
+    "password": "test@123",
+    "locationDTO": {
+      "district": "nyabihu",
+      "province": "west",
+      "country": "Rwanda"
+    }
+  },
+  {
+    "firstName": "karara",
+    "lastName": "karara",
+    "email": "karara@gmail.com",
+    "phoneNumber": "0781234567",
+    "password": "root@123",
+    "locationDTO": {
+      "district": "nyabihu",
+      "province": "west",
+      "country": "Rwanda"
+    }
+  }
+]

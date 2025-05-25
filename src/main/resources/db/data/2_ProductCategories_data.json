@@ -1,0 +1,12 @@
+[
+      { "name": "Furniture" },
+      { "name": "Construction" },
+      { "name": "Tools" },
+      { "name": "Agriculture" },
+      { "name": "Electronics" },
+      { "name": "Clothing" },
+      { "name": "Automotive" },
+      { "name": "Books" },
+      { "name": "Healthcare" },
+      { "name": "Sports" }
+]
