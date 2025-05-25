@@ -17,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 
 @Configuration // to indicate a spring sec conf class
 @EnableWebSecurity // to use below sec customization
@@ -48,13 +51,35 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers("/api/auth/**",  "/", "/swagger-ui/**", "/v3/api-docs/**").permitAll();
+                    authorize.requestMatchers(
+                            "/api/auth/**",
+                            "/",
+                            "/swagger-ui/**",
+                            "/v3/api-docs",
+                            "/manage/health",
+                            "/manage/info"
+                    ).permitAll();
+
+//                    authorize.requestMatchers("/manage/**").hasRole("ADMIN");
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    authorize.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs").permitAll();
                     authorize.anyRequest().authenticated();
-                }).httpBasic(Customizer.withDefaults());
+                })
+                .httpBasic(Customizer.withDefaults());
+
+        // Add this to exclude actuator endpoints from JWT filter
+        http.securityMatcher(new NegatedRequestMatcher(
+                new OrRequestMatcher(
+                        new AntPathRequestMatcher("/api/auth/**"),
+                        new AntPathRequestMatcher("/manage/health"),
+                        new AntPathRequestMatcher("/manage/info"),
+                        new AntPathRequestMatcher("/swagger-ui/**"),
+                        new AntPathRequestMatcher("/v3/api-docs/**")
+                )));
 
         http.exceptionHandling(exception -> exception
                 .authenticationEntryPoint(authenticationEntryPoint));
+
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

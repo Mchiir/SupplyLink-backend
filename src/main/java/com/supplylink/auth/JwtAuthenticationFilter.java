@@ -39,6 +39,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        // Skip filtering for actuator and auth endpoints
+        if (request.getRequestURI().startsWith("/manage/health") ||
+                request.getRequestURI().startsWith("/manage/info") ||
+                request.getRequestURI().startsWith("/swagger-ui") ||
+                request.getRequestURI().startsWith("/v3/api-docs") ||
+                request.getRequestURI().startsWith("/api/auth/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = getTokenFromRequest(request);
 
         // Validate Token
