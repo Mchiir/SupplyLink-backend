@@ -3,10 +3,13 @@ package com.supplylink.services.impl;
 import com.supplylink.models.Product;
 import com.supplylink.repositories.ProductRepository;
 import com.supplylink.services.ProductService;
+import com.supplylink.specifications.ProductSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -53,5 +56,23 @@ public class ProductServiceImpl implements ProductService {
     public boolean deleteProduct(UUID id) {
         productRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public Page<Product> searchProducts(
+            UUID categoryId,
+            UUID locationId,
+            Double minPrice,
+            Double maxPrice,
+            String keyword,
+            Pageable pageable) {
+
+        Specification<Product> spec = Specification
+                .where(ProductSpecification.hasCategory(categoryId))
+                .and(ProductSpecification.hasLocation(locationId))
+                .and(ProductSpecification.priceBetween(minPrice, maxPrice))
+                .and(ProductSpecification.keywordContains(keyword));
+
+        return productRepository.findAll(spec, pageable);
     }
 }
