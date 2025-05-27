@@ -89,7 +89,7 @@ public class ProductController {
                 Product product = new Product();
                 product.setName(dto.getName());
                 product.setDescription(dto.getDescription());
-                product.setPrice(dto.getPrice().doubleValue());
+                product.setPrice(dto.getPrice());
                 product.setQuantity(dto.getQuantity());
 
                 // Create category and location objects with only the ID set
@@ -109,7 +109,7 @@ public class ProductController {
                 res.setId(p.getId());
                 res.setName(p.getName());
                 res.setDescription(p.getDescription());
-                res.setPrice(BigDecimal.valueOf(p.getPrice()));
+                res.setPrice(p.getPrice());
                 res.setQuantity(p.getQuantity());
                 res.setCategoryId(p.getCategory().getId());
                 res.setLocationId(p.getLocation().getId());

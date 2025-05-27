@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         BigDecimal totalAmount = cartItems.stream()
-            .map(item -> BigDecimal.valueOf(item.getProduct().getPrice()).multiply(BigDecimal.valueOf(item.getQuantity())))
+            .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         PaymentResponse paymentResponse = paymentService.processPayment(userId, totalAmount);
@@ -97,5 +97,10 @@ public class OrderServiceImpl implements OrderService {
             .orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(status);
         orderRepository.save(order);
+    }
+
+    @Override
+    public void cancelOrder(UUID orderId, UUID currentUserId) {
+
     }
 }

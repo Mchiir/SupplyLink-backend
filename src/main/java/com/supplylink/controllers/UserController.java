@@ -1,8 +1,8 @@
 package com.supplylink.controllers;
 
 import com.supplylink.dtos.res.ApiResponse;
-import com.supplylink.dtos.req.UserReqDTO;
-import com.supplylink.dtos.res.UserResDTO;
+import com.supplylink.dtos.req.UserRegistrationReqDTO;
+import com.supplylink.dtos.res.UserRegistrationResDTO;
 import com.supplylink.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,16 +25,16 @@ public class UserController {
 
     // Get All Users
     @GetMapping
-    public ResponseEntity<ApiResponse<List<UserResDTO>>> getAllUsers() {
-        List<UserResDTO> users = userService.getAllUsers();
+    public ResponseEntity<ApiResponse<List<UserRegistrationResDTO>>> getAllUsers() {
+        List<UserRegistrationResDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
     }
 
     // Get Single User
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserResDTO>> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<ApiResponse<UserRegistrationResDTO>> getUserById(@PathVariable UUID id) {
         try {
-            UserResDTO user = userService.getUserById(id);
+            UserRegistrationResDTO user = userService.getUserById(id);
             return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", user));
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -44,10 +44,10 @@ public class UserController {
 
     // Update User
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserResDTO>> updateUser(@PathVariable UUID id,
-                                                              @Valid @RequestBody UserReqDTO userReqDTO) {
+    public ResponseEntity<ApiResponse<UserRegistrationResDTO>> updateUser(@PathVariable UUID id,
+                                                                          @Valid @RequestBody UserRegistrationReqDTO userRegistrationReqDTO) {
         try {
-            UserResDTO updatedUser = userService.updateUser(id, userReqDTO);
+            UserRegistrationResDTO updatedUser = userService.updateUser(id, userRegistrationReqDTO);
             return ResponseEntity.ok(ApiResponse.success("User updated successfully", updatedUser));
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

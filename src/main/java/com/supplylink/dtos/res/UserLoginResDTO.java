@@ -2,11 +2,11 @@ package com.supplylink.dtos.res;
 
 import java.io.Serializable;
 
-public class AuthRes implements Serializable {
+public class UserLoginResDTO implements Serializable {
     private String accessToken;
 
-    public AuthRes() {}
-    public AuthRes(String accessToken) {
+    public UserLoginResDTO() {}
+    public UserLoginResDTO(String accessToken) {
         this.accessToken = accessToken;
     }
 

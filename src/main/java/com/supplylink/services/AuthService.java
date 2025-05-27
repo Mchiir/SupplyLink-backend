@@ -2,12 +2,12 @@ package com.supplylink.services;
 
 
 import com.supplylink.dtos.req.AuthReq;
-import com.supplylink.dtos.req.UserReqDTO;
-import com.supplylink.dtos.res.UserResDTO;
+import com.supplylink.dtos.req.UserRegistrationReqDTO;
+import com.supplylink.dtos.res.UserRegistrationResDTO;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface AuthService {
     String loginUser(AuthReq authReq);
-    UserResDTO registerUser(UserReqDTO userReqDTO);
+    UserRegistrationResDTO registerUser(UserRegistrationReqDTO userRegistrationReqDTO);
 }

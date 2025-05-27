@@ -1,8 +1,8 @@
 package com.supplylink.services;
 
 
-import com.supplylink.dtos.req.UserReqDTO;
-import com.supplylink.dtos.res.UserResDTO;
+import com.supplylink.dtos.req.UserRegistrationReqDTO;
+import com.supplylink.dtos.res.UserRegistrationResDTO;
 import com.supplylink.models.User;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +11,9 @@ import java.util.UUID;
 
 @Service
 public interface UserService {
-    List<UserResDTO> getAllUsers();
-    UserResDTO getUserById(UUID id);
-    UserResDTO updateUser(UUID id, UserReqDTO userReqDTO);
+    List<UserRegistrationResDTO> getAllUsers();
+    UserRegistrationResDTO getUserById(UUID id);
+    UserRegistrationResDTO updateUser(UUID id, UserRegistrationReqDTO userRegistrationReqDTO);
     void deleteUser(UUID id);
     User getUserByEmail(String email);
     User getUserByPhoneNumber(String phoneNumber);

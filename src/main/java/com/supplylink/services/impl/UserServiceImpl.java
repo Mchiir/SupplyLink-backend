@@ -1,7 +1,7 @@
 package com.supplylink.services.impl;
 
-import com.supplylink.dtos.req.UserReqDTO;
-import com.supplylink.dtos.res.UserResDTO;
+import com.supplylink.dtos.req.UserRegistrationReqDTO;
+import com.supplylink.dtos.res.UserRegistrationResDTO;
 import com.supplylink.validations.UserReqDTOValidator;
 import com.supplylink.exceptions.InvalidRequestException;
 import com.supplylink.models.User;
@@ -36,17 +36,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResDTO> getAllUsers() {
+    public List<UserRegistrationResDTO> getAllUsers() {
         return ((List<User>) userRepository.findAll()).stream()
-                .map(user -> modelMapper.map(user, UserResDTO.class))
+                .map(user -> modelMapper.map(user, UserRegistrationResDTO.class))
                 .toList();
     }
 
     @Override
-    public UserResDTO getUserById(UUID id) {
+    public UserRegistrationResDTO getUserById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return modelMapper.map(user, UserResDTO.class);
+        return modelMapper.map(user, UserRegistrationResDTO.class);
     }
 
     @Override
@@ -76,40 +76,40 @@ public class UserServiceImpl implements UserService {
     }
 
         @Override
-    public UserResDTO updateUser(UUID id, UserReqDTO userReqDTO) {
+    public UserRegistrationResDTO updateUser(UUID id, UserRegistrationReqDTO userRegistrationReqDTO) {
         try{
             // Validate input first
-            validator.validate(userReqDTO);
+            validator.validate(userRegistrationReqDTO);
 
             User existingUser = userRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
             // Check if new email/phone conflicts with others
-            if (userReqDTO.getEmail() != null &&
-                    !userReqDTO.getEmail().equals(existingUser.getEmail()) &&
-                    userRepository.existsByEmail(userReqDTO.getEmail())) {
+            if (userRegistrationReqDTO.getEmail() != null &&
+                    !userRegistrationReqDTO.getEmail().equals(existingUser.getEmail()) &&
+                    userRepository.existsByEmail(userRegistrationReqDTO.getEmail())) {
                 throw new InvalidRequestException("Email already in use");
             }
 
-            if (userReqDTO.getPhoneNumber() != null &&
-                    !userReqDTO.getPhoneNumber().equals(existingUser.getPhoneNumber()) &&
-                    userRepository.existsByPhoneNumber(userReqDTO.getPhoneNumber())) {
+            if (userRegistrationReqDTO.getPhoneNumber() != null &&
+                    !userRegistrationReqDTO.getPhoneNumber().equals(existingUser.getPhoneNumber()) &&
+                    userRepository.existsByPhoneNumber(userRegistrationReqDTO.getPhoneNumber())) {
                 throw new InvalidRequestException("Phone number already in use");
             }
 
             // Update fields
-            existingUser.setFirstName(userReqDTO.getFirstName());
-            existingUser.setLastName(userReqDTO.getLastName());
-            existingUser.setEmail(userReqDTO.getEmail());
-            existingUser.setPhoneNumber(userReqDTO.getPhoneNumber());
+            existingUser.setFirstName(userRegistrationReqDTO.getFirstName());
+            existingUser.setLastName(userRegistrationReqDTO.getLastName());
+            existingUser.setEmail(userRegistrationReqDTO.getEmail());
+            existingUser.setPhoneNumber(userRegistrationReqDTO.getPhoneNumber());
 
             // Only update password if provided
-            if (userReqDTO.getPassword() != null) {
-                existingUser.setPassword(passwordEncoder.encode(userReqDTO.getPassword()));
+            if (userRegistrationReqDTO.getPassword() != null) {
+                existingUser.setPassword(passwordEncoder.encode(userRegistrationReqDTO.getPassword()));
             }
 
             User updatedUser = userRepository.save(existingUser);
-            return modelMapper.map(updatedUser, UserResDTO.class);
+            return modelMapper.map(updatedUser, UserRegistrationResDTO.class);
         } catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }

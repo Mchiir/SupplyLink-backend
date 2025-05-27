@@ -3,8 +3,8 @@ package com.supplylink.services.impl;
 import com.supplylink.auth.JwtTokenProvider;
 import com.supplylink.dtos.req.AuthReq;
 import com.supplylink.dtos.LocationDTO;
-import com.supplylink.dtos.req.UserReqDTO;
-import com.supplylink.dtos.res.UserResDTO;
+import com.supplylink.dtos.req.UserRegistrationReqDTO;
+import com.supplylink.dtos.res.UserRegistrationResDTO;
 import com.supplylink.exceptions.InvalidRequestException;
 import com.supplylink.models.Location;
 import com.supplylink.models.Role;
@@ -118,35 +118,35 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserResDTO registerUser(UserReqDTO userReqDTO) {
+    public UserRegistrationResDTO registerUser(UserRegistrationReqDTO userRegistrationReqDTO) {
         try {
         // Validate registration data
-        userReqDTOValidator.validate(userReqDTO);
+        userReqDTOValidator.validate(userRegistrationReqDTO);
 
         // Check for existing users
-        if (userReqDTO.getEmail() != null &&
-                userRepository.existsByEmail(userReqDTO.getEmail())) {
+        if (userRegistrationReqDTO.getEmail() != null &&
+                userRepository.existsByEmail(userRegistrationReqDTO.getEmail())) {
             throw new InvalidRequestException("Email already in use");
         }
 
-        if (userReqDTO.getPhoneNumber() != null &&
-                userRepository.existsByPhoneNumber(userReqDTO.getPhoneNumber())) {
+        if (userRegistrationReqDTO.getPhoneNumber() != null &&
+                userRepository.existsByPhoneNumber(userRegistrationReqDTO.getPhoneNumber())) {
             throw new InvalidRequestException("Phone number already in use");
         }
 
-        LocationDTO locationDTO = userReqDTO.getLocationDTO();
+        LocationDTO locationDTO = userRegistrationReqDTO.getLocationDTO();
         Location location = new Location(locationDTO.getDistrict(), locationDTO.getProvince(), locationDTO.getCountry());
 
         // Create new user
-        User newUser = modelMapper.map(userReqDTO, User.class);
+        User newUser = modelMapper.map(userRegistrationReqDTO, User.class);
         newUser.setLocation(location);
         var regularUserRole =  new Role("ROLE_USER");
         newUser.setRoles(Set.of(regularUserRole)); // Default role
-        newUser.setPassword(passwordEncoder.encode(userReqDTO.getPassword()));
+        newUser.setPassword(passwordEncoder.encode(userRegistrationReqDTO.getPassword()));
 
 
         User savedUser = userRepository.save(newUser);
-        return modelMapper.map(savedUser, UserResDTO.class);
+        return modelMapper.map(savedUser, UserRegistrationResDTO.class);
         } catch (DataIntegrityViolationException ex) {
             throw new InvalidRequestException("Registration failed: " +
                     ex.getMostSpecificCause().getMessage());

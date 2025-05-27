@@ -4,7 +4,7 @@ import com.supplylink.models.Location;
 
 import java.util.Set;
 
-public class UserResDTO {
+public class UserRegistrationResDTO {
 
     private String firstName;
     private String lastName;
@@ -12,10 +12,10 @@ public class UserResDTO {
     private Location location;
     private Set<String> roles; // Simplified role names for response
 
-    public UserResDTO() {
+    public UserRegistrationResDTO() {
     }
 
-    public UserResDTO(String firstName, String lastName, String email, Location location, Set<String> roles) {
+    public UserRegistrationResDTO(String firstName, String lastName, String email, Location location, Set<String> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class UserReqDTO {
+public class UserRegistrationReqDTO {
 
     @NotBlank(message = "First name is required")
     @Size(min = 3, max = 30, message = "First name must be between 2 and 30 characters")
@@ -26,9 +26,9 @@ public class UserReqDTO {
     @NotNull
     private LocationDTO locationDTO;
 
-    public UserReqDTO() {}
+    public UserRegistrationReqDTO() {}
 
-    public UserReqDTO(String firstName, String lastName, String email, String phoneNumber, String password, LocationDTO locationDTO) {
+    public UserRegistrationReqDTO(String firstName, String lastName, String email, String phoneNumber, String password, LocationDTO locationDTO) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

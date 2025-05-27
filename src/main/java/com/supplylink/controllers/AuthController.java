@@ -1,17 +1,16 @@
 package com.supplylink.controllers;
 
 import com.supplylink.dtos.req.AuthReq;
-import com.supplylink.dtos.req.UserReqDTO;
+import com.supplylink.dtos.req.UserRegistrationReqDTO;
 import com.supplylink.dtos.res.ApiResponse;
-import com.supplylink.dtos.res.AuthRes;
-import com.supplylink.dtos.res.UserResDTO;
+import com.supplylink.dtos.res.UserLoginResDTO;
+import com.supplylink.dtos.res.UserRegistrationResDTO;
 import com.supplylink.exceptions.InvalidRequestException;
 import com.supplylink.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +25,9 @@ public class AuthController {
 
     // Register User
     @PostMapping("/registerUser")
-    public ResponseEntity<ApiResponse<UserResDTO>> register(@Valid @RequestBody UserReqDTO userReqDTO) {
+    public ResponseEntity<ApiResponse<UserRegistrationResDTO>> register(@Valid @RequestBody UserRegistrationReqDTO userRegistrationReqDTO) {
         try {
-            UserResDTO registeredUser = authService.registerUser(userReqDTO);
+            UserRegistrationResDTO registeredUser = authService.registerUser(userRegistrationReqDTO);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(ApiResponse.success("User registered successfully", registeredUser));
@@ -47,11 +46,11 @@ public class AuthController {
 
     // Login User
     @PostMapping("/loginUser")
-    public ResponseEntity<ApiResponse<AuthRes>> login(@Valid @RequestBody AuthReq authReq) {
+    public ResponseEntity<ApiResponse<UserLoginResDTO>> login(@Valid @RequestBody AuthReq authReq) {
         try {
             String token = authService.loginUser(authReq);
 
-            var authRes = new AuthRes();
+            var authRes = new UserLoginResDTO();
             authRes.setAccessToken(token);
 
             return ResponseEntity.ok(

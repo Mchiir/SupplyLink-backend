@@ -2,6 +2,7 @@ package com.supplylink.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +14,7 @@ public class Product {
 
     private String name;
     private String description;
-    private double price;
+    private BigDecimal price;
     private int quantity;
 
     @ManyToOne
@@ -25,7 +26,7 @@ public class Product {
     private Location location;
 
     public Product() {}
-    public Product(String name, String description, double price, int quantity, Category category, Location location) {
+    public Product(String name, String description, BigDecimal price, int quantity, Category category, Location location) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -58,11 +59,11 @@ public class Product {
         this.description = description;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

@@ -22,4 +22,6 @@ public interface OrderService {
 
     // Updates the status of an order (admin or system)
     void updateOrderStatus(UUID orderId, OrderStatus status);
+
+    void cancelOrder(UUID orderId, UUID currentUserId);
 }

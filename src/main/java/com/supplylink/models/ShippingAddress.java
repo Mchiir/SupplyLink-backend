@@ -3,49 +3,66 @@ package com.supplylink.models;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 
+// destination of order
 @Embeddable
 public class ShippingAddress {
     @NotBlank
-    private String addressLine;
-
+    private String province;
     @NotBlank
-    private String city;
-
+    private String district;
     @NotBlank
-    private String country;
-
+    private String sector;
     @NotBlank
-    private String postalCode;
+    private String village;
+    @NotBlank
+    private String description; // e.g., "Near Nyabugogo bus park"
 
-    public @NotBlank String getAddressLine() {
-        return addressLine;
+    public ShippingAddress() {}
+    public ShippingAddress(String province, String district, String sector, String village, String description) {
+        this.province = province;
+        this.district = district;
+        this.sector = sector;
+        this.village = village;
+        this.description = description;
     }
 
-    public void setAddressLine(@NotBlank String addressLine) {
-        this.addressLine = addressLine;
+    public @NotBlank String getProvince() {
+        return province;
     }
 
-    public @NotBlank String getCity() {
-        return city;
+    public void setProvince(@NotBlank String province) {
+        this.province = province;
     }
 
-    public void setCity(@NotBlank String city) {
-        this.city = city;
+    public @NotBlank String getDistrict() {
+        return district;
     }
 
-    public @NotBlank String getCountry() {
-        return country;
+    public void setDistrict(@NotBlank String district) {
+        this.district = district;
     }
 
-    public void setCountry(@NotBlank String country) {
-        this.country = country;
+    public @NotBlank String getSector() {
+        return sector;
     }
 
-    public @NotBlank String getPostalCode() {
-        return postalCode;
+    public void setSector(@NotBlank String sector) {
+        this.sector = sector;
     }
 
-    public void setPostalCode(@NotBlank String postalCode) {
-        this.postalCode = postalCode;
+    public @NotBlank String getVillage() {
+        return village;
+    }
+
+    public void setVillage(@NotBlank String village) {
+        this.village = village;
+    }
+
+    public @NotBlank String getDescription() {
+        return description;
+    }
+
+    public void setDescription(@NotBlank String description) {
+        this.description = description;
     }
 }
