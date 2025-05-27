@@ -31,9 +31,9 @@ public class Location {
         return id;
     }
 
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getDistrict() {
         return district;

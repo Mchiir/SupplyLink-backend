@@ -1,52 +1,154 @@
 [
-    {"name": "Wooden Chair", "description": "Ergonomic wooden chair", "price": 45.99, "quantity": 10, "category_id": 1, "location_id": 1}
-,{"name": "Cement Bag", "description": "50kg Portland cement", "price": 8.50, "quantity": 50, "category_id": 2, "location_id": 2}
-,{"name": "Hammer", "description": "Steel claw hammer", "price": 12.00, "quantity": 30, "category_id": 3, "location_id": 3}
-,{"name": "Maize Seeds", "description": "Hybrid maize seeds pack", "price": 5.75, "quantity": 100, "category_id": 4, "location_id": 4}
-,{"name": "Smartphone", "description": "Latest model smartphone", "price": 299.99, "quantity": 20, "category_id": 5, "location_id": 5}
-,{"name": "T-Shirt", "description": "Cotton unisex T-shirt", "price": 9.99, "quantity": 200, "category_id": 6, "location_id": 6}
-,{"name": "Car Battery", "description": "12V maintenance-free battery", "price": 85.00, "quantity": 15, "category_id": 7, "location_id": 7}
-,{"name": "Novel Book", "description": "Bestselling fiction novel", "price": 14.50, "quantity": 40, "category_id": 8, "location_id": 8}
-,{"name": "Vitamin C", "description": "1000mg Vitamin C tablets", "price": 7.25, "quantity": 60, "category_id": 9, "location_id": 9}
-,{"name": "Football", "description": "Standard size football", "price": 19.99, "quantity": 25, "category_id": 10, "location_id": 10}
-,{"name": "Dining Table", "description": "6-seater wooden dining table", "price": 120.00, "quantity": 5, "category_id": 1, "location_id": 11}
-,{"name": "Bricks Pack", "description": "Pack of 100 clay bricks", "price": 30.00, "quantity": 20, "category_id": 2, "location_id": 12}
-,{"name": "Saw", "description": "Handheld wood saw", "price": 15.00, "quantity": 35, "category_id": 3, "location_id": 13}
-,{"name": "Fertilizer", "description": "Organic compost fertilizer", "price": 10.00, "quantity": 80, "category_id": 4, "location_id": 14}
-,{"name": "Laptop", "description": "15-inch laptop with SSD", "price": 750.00, "quantity": 10, "category_id": 5, "location_id": 15}
-,{"name": "Jeans", "description": "Denim jeans for men", "price": 25.00, "quantity": 60, "category_id": 6, "location_id": 16}
-,{"name": "Engine Oil", "description": "5L synthetic engine oil", "price": 40.00, "quantity": 25, "category_id": 7, "location_id": 17}
-,{"name": "Cookbook", "description": "Healthy recipes cookbook", "price": 18.00, "quantity": 30, "category_id": 8, "location_id": 18}
-,{"name": "First Aid Kit", "description": "Comprehensive first aid kit", "price": 22.50, "quantity": 15, "category_id": 9, "location_id": 19}
-,{"name": "Basketball", "description": "Official size basketball", "price": 21.99, "quantity": 20, "category_id": 10, "location_id": 20}
-,{"name": "Office Chair", "description": "Adjustable swivel office chair", "price": 65.00, "quantity": 12, "category_id": 1, "location_id": 21}
-,{"name": "Steel Rods", "description": "10mm steel reinforcement rods", "price": 100.00, "quantity": 40, "category_id": 2, "location_id": 22}
-,{"name": "Chisel Set", "description": "Set of 5 woodworking chisels", "price": 20.00, "quantity": 25, "category_id": 3, "location_id": 23}
-,{"name": "Irrigation Kit", "description": "Drip irrigation system", "price": 150.00, "quantity": 8, "category_id": 4, "location_id": 24}
-,{"name": "Tablet", "description": "10-inch Android tablet", "price": 199.99, "quantity": 18, "category_id": 5, "location_id": 25}
-,{"name": "Jacket", "description": "Waterproof outdoor jacket", "price": 45.00, "quantity": 30, "category_id": 6, "location_id": 26}
-,{"name": "Tire", "description": "All-season car tire", "price": 60.00, "quantity": 22, "category_id": 7, "location_id": 27}
-,{"name": "Science Textbook", "description": "High school physics textbook", "price": 35.00, "quantity": 50, "category_id": 8, "location_id": 28}
-,{"name": "Thermometer", "description": "Digital body thermometer", "price": 12.00, "quantity": 40, "category_id": 9, "location_id": 29}
-,{"name": "Tennis Racket", "description": "Lightweight tennis racket", "price": 55.00, "quantity": 10, "category_id": 10, "location_id": 30}
-,{"name": "Wheelbarrow", "description": "Heavy-duty steel wheelbarrow", "price": 75.00, "quantity": 18, "category_id": 2, "location_id": 1}
-,{"name": "Concrete Mixer", "description": "Portable electric concrete mixer", "price": 450.00, "quantity": 5, "category_id": 2, "location_id": 2}
-,{"name": "Shovel", "description": "Steel shovel with wooden handle", "price": 14.99, "quantity": 40, "category_id": 2, "location_id": 3}
-,{"name": "Ladder", "description": "Aluminum extension ladder", "price": 89.00, "quantity": 10, "category_id": 2, "location_id": 4}
-,{"name": "Sand Bag", "description": "50kg river sand bag", "price": 6.50, "quantity": 100, "category_id": 2, "location_id": 5}
-,{"name": "Level Tool", "description": "24-inch bubble level", "price": 11.50, "quantity": 35, "category_id": 2, "location_id": 6}
-,{"name": "Construction Helmet", "description": "Safety helmet for workers", "price": 9.25, "quantity": 60, "category_id": 2, "location_id": 7}
-,{"name": "Nails Box", "description": "Box of 500 construction nails", "price": 4.75, "quantity": 150, "category_id": 2, "location_id": 8}
-,{"name": "Measuring Tape", "description": "10m measuring tape", "price": 7.00, "quantity": 70, "category_id": 2, "location_id": 9}
-,{"name": "PVC Pipes", "description": "Pack of 5 PVC water pipes", "price": 35.00, "quantity": 20, "category_id": 2, "location_id": 10}
-,{"name": "Trowel", "description": "Bricklayer’s steel trowel", "price": 10.00, "quantity": 30, "category_id": 2, "location_id": 11}
-,{"name": "Concrete Blocks", "description": "Pack of 50 hollow concrete blocks", "price": 65.00, "quantity": 10, "category_id": 2, "location_id": 12}
-,{"name": "Paint Bucket", "description": "20L exterior paint bucket", "price": 48.00, "quantity": 15, "category_id": 2, "location_id": 13}
-,{"name": "Paint Roller", "description": "Paint roller with extra refills", "price": 8.99, "quantity": 50, "category_id": 2, "location_id": 14}
-,{"name": "Work Boots", "description": "Steel toe construction boots", "price": 52.00, "quantity": 25, "category_id": 2, "location_id": 15}
-,{"name": "Gravel Bag", "description": "25kg bag of gravel", "price": 5.50, "quantity": 60, "category_id": 2, "location_id": 16}
-,{"name": "Wire Mesh", "description": "Steel mesh for concrete reinforcement", "price": 20.00, "quantity": 12, "category_id": 2, "location_id": 17}
-,{"name": "Mortar Board", "description": "Portable mixing board", "price": 18.00, "quantity": 14, "category_id": 2, "location_id": 18}
-,{"name": "Sledgehammer", "description": "Heavy-duty sledgehammer", "price": 25.00, "quantity": 20, "category_id": 2, "location_id": 19}
-,{"name": "Insulation Roll", "description": "Thermal insulation material roll", "price": 40.00, "quantity": 10, "category_id": 2, "location_id": 20}
+    {
+        "name": "Wooden Chair",
+        "description": "Ergonomic wooden chair",
+        "price": 45.99,
+        "quantity": 10,
+        "categoryId": "e45b2f20-c490-4795-88d2-c1588ff52d7a",
+        "locationId": "686d0ba8-5573-4927-a1a8-d7196010c3e9"
+    },
+    {
+        "name": "Cement Bag",
+        "description": "50kg Portland cement",
+        "price": 8.50,
+        "quantity": 50,
+        "categoryId": "5da1e71a-5063-4ea2-ab42-f2c98e8af247",
+        "locationId": "a63daca4-7120-450b-8944-a3b9e63a3787"
+    },
+    {
+        "name": "Hammer",
+        "description": "Steel claw hammer",
+        "price": 12.00,
+        "quantity": 30,
+        "categoryId": "10aa005f-e047-4ccf-95bf-e959ec7c312d",
+        "locationId": "4ebb2a0f-a52a-4d01-b21d-7e417cc47c76"
+    },
+    {
+        "name": "Maize Seeds",
+        "description": "Hybrid maize seeds pack",
+        "price": 5.75,
+        "quantity": 100,
+        "categoryId": "debe66dc-c836-4231-a0a4-1d711e00d39d",
+        "locationId": "79fcb95a-e96f-424b-8d97-e5150f0bacfe"
+    },
+    {
+        "name": "Smartphone",
+        "description": "Latest model smartphone",
+        "price": 299.99,
+        "quantity": 20,
+        "categoryId": "807b8b9f-661f-4dbf-b54f-caa9c924eff5",
+        "locationId": "28b71b99-c655-48c9-8faf-69ca15bcd3f2"
+    },
+    {
+        "name": "T-Shirt",
+        "description": "Cotton unisex T-shirt",
+        "price": 9.99,
+        "quantity": 200,
+        "categoryId": "ca74a51a-ea91-483f-aa2a-5d707a28a25d",
+        "locationId": "5f84c115-cf12-4954-947b-c9672b6ebb61"
+    },
+    {
+        "name": "Car Battery",
+        "description": "12V maintenance-free battery",
+        "price": 85.00,
+        "quantity": 15,
+        "categoryId": "ff26cf13-d49a-444b-936e-c0ec8bd81ecd",
+        "locationId": "d104cc60-3867-4fc5-83f8-368fdcdb1684"
+    },
+    {
+        "name": "Novel Book",
+        "description": "Bestselling fiction novel",
+        "price": 14.50,
+        "quantity": 40,
+        "categoryId": "dab2d720-67b0-4411-bad3-b701f71f378e",
+        "locationId": "8e45a5da-fe9e-462f-8648-017348d7ca51"
+    },
+    {
+        "name": "Vitamin C",
+        "description": "1000mg Vitamin C tablets",
+        "price": 7.25,
+        "quantity": 60,
+        "categoryId": "ebe9126e-fcae-424a-bce8-ef47bb2609e4",
+        "locationId": "072a99e9-0806-4af7-a838-240dc173fba7"
+    },
+    {
+        "name": "Football",
+        "description": "Standard size football",
+        "price": 19.99,
+        "quantity": 25,
+        "categoryId": "0e0e6749-c4f2-4d90-acfb-7156ec7757c9",
+        "locationId": "eb2dc01c-43d2-4d08-9bd7-5f05b9a2221f"
+    },
+    {
+        "name": "Dining Table",
+        "description": "6-seater wooden dining table",
+        "price": 120.00,
+        "quantity": 5,
+        "categoryId": "e45b2f20-c490-4795-88d2-c1588ff52d7a",
+        "locationId": "5741d7f9-9596-49cd-ba9a-e6c1c433400d"
+    },
+    {
+        "name": "Bricks Pack",
+        "description": "Pack of 100 clay bricks",
+        "price": 30.00,
+        "quantity": 20,
+        "categoryId": "5da1e71a-5063-4ea2-ab42-f2c98e8af247",
+        "locationId": "d1f0789b-8069-4995-8dd1-1ef3b9ada27b"
+    },
+    {
+        "name": "Saw",
+        "description": "Handheld wood saw",
+        "price": 15.00,
+        "quantity": 35,
+        "categoryId": "10aa005f-e047-4ccf-95bf-e959ec7c312d",
+        "locationId": "87fb1d08-3395-4c58-816d-f1d78534a7db"
+    },
+    {
+        "name": "Fertilizer",
+        "description": "Organic compost fertilizer",
+        "price": 10.00,
+        "quantity": 80,
+        "categoryId": "debe66dc-c836-4231-a0a4-1d711e00d39d",
+        "locationId": "d8865f4e-278a-41f0-b7fc-84d6c1235668"
+    },
+    {
+        "name": "Laptop",
+        "description": "15-inch laptop with SSD",
+        "price": 750.00,
+        "quantity": 10,
+        "categoryId": "807b8b9f-661f-4dbf-b54f-caa9c924eff5",
+        "locationId": "d798feb3-0544-4247-a7f1-dbc79dc4d2bb"
+    },
+    {
+        "name": "Jeans",
+        "description": "Denim jeans for men",
+        "price": 25.00,
+        "quantity": 60,
+        "categoryId": "ca74a51a-ea91-483f-aa2a-5d707a28a25d",
+        "locationId": "5bfb5c0f-4796-4e17-8a76-dbfdbdc5ff0f"
+    },
+    {
+        "name": "Engine Oil",
+        "description": "5L synthetic engine oil",
+        "price": 40.00,
+        "quantity": 25,
+        "categoryId": "ff26cf13-d49a-444b-936e-c0ec8bd81ecd",
+        "locationId": "ca87881d-c69f-4a74-9683-fbed5ec2d3eb"
+    },
+    {
+        "name": "Cookbook",
+        "description": "Healthy recipes cookbook",
+        "price": 18.00,
+        "quantity": 30,
+        "categoryId": "dab2d720-67b0-4411-bad3-b701f71f378e",
+        "locationId": "fa0dcf5b-3a80-48cb-8a0e-a2b4764bd9a4"
+    },
+    {
+        "name": "First Aid Kit",
+        "description": "Comprehensive first aid kit",
+        "price": 22.00,
+        "quantity": 40,
+        "categoryId": "ebe9126e-fcae-424a-bce8-ef47bb2609e4",
+        "locationId": "78ddf355-1d94-46bb-a822-093d856d8a35"
+    }
 ]

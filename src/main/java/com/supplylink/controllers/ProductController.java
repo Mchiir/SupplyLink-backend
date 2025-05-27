@@ -3,6 +3,8 @@ package com.supplylink.controllers;
 import com.supplylink.dtos.req.ProductReqDTO;
 import com.supplylink.dtos.res.ApiResponse;
 import com.supplylink.dtos.res.ProductResDTO;
+import com.supplylink.models.Category;
+import com.supplylink.models.Location;
 import com.supplylink.models.Product;
 import com.supplylink.services.ProductService;
 import jakarta.validation.Valid;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -56,16 +59,45 @@ public class ProductController {
     }
 
     @PostMapping("/batch")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<ProductResDTO>>> createProducts(@Valid @RequestBody List<ProductReqDTO> dtos) {
         try {
-            var products = dtos.stream().map(dto -> modelMapper.map(dto, Product.class)).collect(Collectors.toList());
-            var created = productService.createProducts(products)
-                    .stream()
-                    .map(p -> modelMapper.map(p, ProductResDTO.class))
-                    .collect(Collectors.toList());
-            return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Batch created", created));
+            List<Product> products = dtos.stream().map(dto -> {
+                Product product = new Product();
+                product.setName(dto.getName());
+                product.setDescription(dto.getDescription());
+                product.setPrice(dto.getPrice().doubleValue());
+                product.setQuantity(dto.getQuantity());
+
+                // Create category and location objects with only the ID set
+                Category category = new Category();
+                category.setId(dto.getCategoryId());
+                product.setCategory(category);
+
+                Location location = new Location();
+                location.setId(dto.getLocationId());
+                product.setLocation(location);
+
+                return product;
+            }).collect(Collectors.toList());
+
+            List<ProductResDTO> created = productService.createProducts(products).stream().map(p -> {
+                ProductResDTO res = new ProductResDTO();
+                res.setId(p.getId());
+                res.setName(p.getName());
+                res.setDescription(p.getDescription());
+                res.setPrice(BigDecimal.valueOf(p.getPrice()));
+                res.setQuantity(p.getQuantity());
+                res.setCategoryId(p.getCategory().getId());
+                res.setLocationId(p.getLocation().getId());
+                return res;
+            }).collect(Collectors.toList());
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("Batch created", created));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error("Batch failed: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error("Batch failed: " + e.getMessage()));
         }
     }
 

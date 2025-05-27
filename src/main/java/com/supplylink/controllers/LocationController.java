@@ -1,8 +1,11 @@
 package com.supplylink.controllers;
 
 import com.supplylink.dtos.LocationDTO;
+import com.supplylink.dtos.req.ProductReqDTO;
 import com.supplylink.dtos.res.ApiResponse;
+import com.supplylink.dtos.res.ProductResDTO;
 import com.supplylink.models.Location;
+import com.supplylink.models.Product;
 import com.supplylink.services.LocationService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/locations")
@@ -48,6 +52,21 @@ public class LocationController {
             return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Created", modelMapper.map(saved, LocationDTO.class)));
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ApiResponse.error("Creation failed: " + ex.getMessage()));
+        }
+    }
+
+    @PostMapping("/batch")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<List<LocationDTO>>> createLocations(@Valid @RequestBody List<LocationDTO> dtos) {
+        try {
+            var locations = dtos.stream().map(dto -> modelMapper.map(dto, Location.class)).collect(Collectors.toList());
+            var created = locationService.createLocations(locations)
+                    .stream()
+                    .map(p -> modelMapper.map(p, LocationDTO.class))
+                    .collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Batch created", created));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error("Batch failed: " + e.getMessage()));
         }
     }
 

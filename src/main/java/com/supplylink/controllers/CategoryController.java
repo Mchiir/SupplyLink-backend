@@ -1,9 +1,11 @@
 package com.supplylink.controllers;
 
+import com.supplylink.dtos.LocationDTO;
 import com.supplylink.dtos.req.CategoryReqDTO;
 import com.supplylink.dtos.res.ApiResponse;
 import com.supplylink.dtos.res.CategoryResDTO;
 import com.supplylink.models.Category;
+import com.supplylink.models.Location;
 import com.supplylink.services.CategoryService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -53,6 +55,21 @@ public class CategoryController {
                     .body(ApiResponse.success("Created successfully", modelMapper.map(created, CategoryResDTO.class)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error("Failed: " + e.getMessage()));
+        }
+    }
+
+    @PostMapping("/batch")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<List<CategoryResDTO>>> createCategories(@Valid @RequestBody List<CategoryReqDTO> dtos) {
+        try {
+            var categories = dtos.stream().map(dto -> modelMapper.map(dto, Category.class)).collect(Collectors.toList());
+            var created = categoryService.createCategories(categories)
+                    .stream()
+                    .map(p -> modelMapper.map(p, CategoryResDTO.class))
+                    .collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Batch created", created));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error("Batch failed: " + e.getMessage()));
         }
     }
 
