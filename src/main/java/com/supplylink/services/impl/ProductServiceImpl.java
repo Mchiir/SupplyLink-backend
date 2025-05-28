@@ -4,6 +4,7 @@ import com.supplylink.models.Product;
 import com.supplylink.repositories.ProductRepository;
 import com.supplylink.services.ProductService;
 import com.supplylink.specifications.ProductSpecification;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -26,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+    @Transactional
     @Override
     public List<Product> createProducts(List<Product> products) {
         return productRepository.saveAll(products);

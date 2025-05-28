@@ -3,6 +3,7 @@ package com.supplylink.services.impl;
 import com.supplylink.models.Category;
 import com.supplylink.repositories.CategoryRepository;
 import com.supplylink.services.CategoryService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(category);
     }
 
+    @Transactional
     @Override
     public List<Category> createCategories(List<Category> categories) {
         return categoryRepository.saveAll(categories);

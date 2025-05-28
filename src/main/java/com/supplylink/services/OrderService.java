@@ -1,7 +1,7 @@
 package com.supplylink.services;
 
 import com.supplylink.dtos.req.OrderReqDTO;
-import com.supplylink.dtos.res.OrderResDTO;
+import com.supplylink.models.Order;
 import com.supplylink.models.enums.OrderStatus;
 import org.springframework.stereotype.Service;
 
@@ -10,18 +10,10 @@ import java.util.UUID;
 
 @Service
 public interface OrderService {
+//    Order checkout(UUID userId, OrderReqDTO request, PaymentService paymentService);
 
-    // Converts all cart items into an order
-    OrderResDTO checkout(UUID userId, OrderReqDTO request, PaymentService paymentService);
-
-    // Returns all past orders of a user
-    List<OrderResDTO> getUserOrders(UUID userId);
-
-    // Returns full details of a single order
-    OrderResDTO getOrderDetails(UUID orderId, UUID userId);
-
-    // Updates the status of an order (admin or system)
+    List<Order> getUserOrders(UUID userId);
+    Order getOrderDetails(UUID orderId, UUID userId);
     void updateOrderStatus(UUID orderId, OrderStatus status);
-
-    void cancelOrder(UUID orderId, UUID currentUserId);
+    void cancelOrder(UUID orderId, UUID userId);
 }

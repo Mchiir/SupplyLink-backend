@@ -3,6 +3,7 @@ package com.supplylink.services.impl;
 import com.supplylink.models.Location;
 import com.supplylink.repositories.LocationRepository;
 import com.supplylink.services.LocationService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class LocationServiceImpl implements LocationService {
         return locationRepository.save(location);
     }
 
+    @Transactional
     @Override
     public List<Location> createLocations(List<Location> locations) {
         return locationRepository.saveAll(locations);

@@ -12,10 +12,8 @@ import java.util.UUID;
 public interface CartItemRepository extends JpaRepository<CartItem, UUID> {
     List<CartItem> findByUserId(UUID userId);
     Optional<CartItem> findByUserIdAndProductId(UUID userId, UUID productId);
-    void deleteByUserId(UUID userId);
 
     void deleteByUserIdAndProductId(UUID userId, UUID productId);
-    void deleteAllByUser(UUID userId);
 
     void deleteAllByUserId(UUID userId);
 }

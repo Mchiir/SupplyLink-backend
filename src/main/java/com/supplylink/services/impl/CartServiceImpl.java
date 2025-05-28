@@ -1,7 +1,6 @@
 package com.supplylink.services.impl;
 
 import com.supplylink.dtos.req.CartItemReqDTO;
-import com.supplylink.dtos.res.CartItemResDTO;
 import com.supplylink.models.CartItem;
 import com.supplylink.models.Product;
 import com.supplylink.models.User;
@@ -9,12 +8,11 @@ import com.supplylink.repositories.CartItemRepository;
 import com.supplylink.repositories.ProductRepository;
 import com.supplylink.repositories.UserRepository;
 import com.supplylink.services.CartService;
-import org.modelmapper.ModelMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -22,25 +20,25 @@ public class CartServiceImpl implements CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
-    public CartServiceImpl(CartItemRepository cartItemRepository, ProductRepository productRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public CartServiceImpl(CartItemRepository cartItemRepository,
+                           ProductRepository productRepository,
+                           UserRepository userRepository) {
         this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
-    public CartItemResDTO addToCart(UUID userId, CartItemReqDTO request) {
+    public CartItem addToCart(UUID userId, CartItemReqDTO request) {
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Product product = productRepository.findById(request.getProductId())
-            .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
         CartItem existing = cartItemRepository.findByUserIdAndProductId(userId, request.getProductId())
-            .orElse(null);
+                .orElse(null);
 
         CartItem cartItem;
         if (existing != null) {
@@ -50,17 +48,16 @@ public class CartServiceImpl implements CartService {
             cartItem = new CartItem(user, product, request.getQuantity());
         }
 
-        CartItem saved = cartItemRepository.save(cartItem);
-        return modelMapper.map(saved, CartItemResDTO.class);
+        return cartItemRepository.save(cartItem);
     }
 
     @Override
-    public CartItemResDTO updateCartItem(UUID userId, UUID productId, int quantity) {
+    public CartItem updateCartItem(UUID userId, UUID productId, int quantity) {
         CartItem item = cartItemRepository.findByUserIdAndProductId(userId, productId)
-            .orElseThrow(() -> new RuntimeException("Cart item not found"));
+                .orElseThrow(() -> new RuntimeException("Cart item not found"));
 
         item.setQuantity(quantity);
-        return modelMapper.map(cartItemRepository.save(item), CartItemResDTO.class);
+        return cartItemRepository.save(item);
     }
 
     @Override
@@ -69,15 +66,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartItemResDTO> getCartItems(UUID userId) {
-        return cartItemRepository.findByUserId(userId)
-            .stream()
-            .map(item -> modelMapper.map(item, CartItemResDTO.class))
-            .collect(Collectors.toList());
+    public List<CartItem> getCartItems(UUID userId) {
+        return cartItemRepository.findByUserId(userId);
     }
 
+    @Transactional
     @Override
     public void clearCart(UUID userId) {
-        cartItemRepository.deleteAllByUser(userId);
+        cartItemRepository.deleteAllByUserId(userId);
     }
 }
