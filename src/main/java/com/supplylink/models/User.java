@@ -39,8 +39,10 @@ public class User {
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
-    public User() {}
+    @Column(nullable = false)
+    private Boolean verified = false;
 
+    public User() {}
     public User(String firstName, String lastName, @Nullable String email,@Nullable String phoneNumber, String password, Set<Role> roles, Location location) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -111,5 +113,13 @@ public class User {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean isVerified) {
+        this.verified = isVerified;
     }
 }

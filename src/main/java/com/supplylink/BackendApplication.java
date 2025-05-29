@@ -3,9 +3,10 @@ package com.supplylink;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = { ThymeleafAutoConfiguration.class })
 public class BackendApplication {
 
     public static void main(String[] args) {

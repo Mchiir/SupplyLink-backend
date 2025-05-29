@@ -14,7 +14,6 @@ public class UserRegistrationResDTO {
 
     public UserRegistrationResDTO() {
     }
-
     public UserRegistrationResDTO(String firstName, String lastName, String email, Location location, Set<String> roles) {
         this.firstName = firstName;
         this.lastName = lastName;

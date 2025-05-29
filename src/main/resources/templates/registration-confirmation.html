@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration Confirmation</title>
+</head>
+<body>
+<h2>Hello, <span th:text="${name}">User</span>!</h2>
+<p>Thank you for registering. Please confirm your email by clicking the link below:</p>
+<p><a th:href="${url}">Verify your email</a></p>
+<img th:src="@{'cid:springLogo'}" alt="Spring Logo" width="100" />
+</body>
+</html>

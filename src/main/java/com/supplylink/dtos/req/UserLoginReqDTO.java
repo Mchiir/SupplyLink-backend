@@ -1,25 +1,43 @@
 package com.supplylink.dtos.req;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class UserLoginReqDTO {
     private String email;
-    private String phoneNumber;
-    private String userId;
 
-    public UserLoginReqDTO(String email, String phoneNumber, String userId) {
+    private String phoneNumber;
+
+    @NotBlank
+    private String password;
+
+    public UserLoginReqDTO() {}
+    public UserLoginReqDTO(String email, String phoneNumber, String password) {
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.userId = userId;
-    }
-
-    public String getEmail() {
-        return email;
+        this.password = password;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public String getUserId() {
-        return userId;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public @NotBlank String getPassword() {
+        return password;
+    }
+
+    public void setPassword(@NotBlank String password) {
+        this.password = password;
+    }
+
+    public @NotBlank String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@NotBlank String email) {
+        this.email = email;
     }
 }

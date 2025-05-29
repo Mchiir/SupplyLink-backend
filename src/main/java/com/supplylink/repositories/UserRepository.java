@@ -18,4 +18,8 @@ public interface UserRepository extends CrudRepository<User, UUID> {
     boolean existsByEmail(@NotBlank String email);
     boolean existsByPhoneNumber(@NotBlank String phoneNumber);
     boolean existsByEmailAndPhoneNumber(@NotBlank String email, String phoneNumber);
+
+    boolean existsByEmailAndVerifiedTrue(@NotBlank String email);
+    boolean existsByPhoneNumberAndVerifiedTrue(@NotBlank String phoneNumber);
+    boolean existsByEmailAndPhoneNumberAndVerifiedTrue(@NotBlank String email, String phoneNumber);
 }
