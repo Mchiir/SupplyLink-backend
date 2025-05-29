@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Service
 public interface OrderService {
-//    Order checkout(UUID userId, OrderReqDTO request, PaymentService paymentService);
+    Order checkout(UUID userId, OrderReqDTO request, PaymentService paymentService);
 
     List<Order> getUserOrders(UUID userId);
     Order getOrderDetails(UUID orderId, UUID userId);

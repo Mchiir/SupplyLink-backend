@@ -34,22 +34,22 @@ public class OrderController {
     @Autowired
     private ContextAccessor contextAccessor;
 
-//    @Autowired
-//    private PaymentService paymentService;
+    @Autowired
+    private PaymentService paymentService;
 
-//    @PostMapping("/checkout")
-//    public ResponseEntity<ApiResponse<OrderResDTO>> checkout(@Valid @RequestBody OrderReqDTO request,
-//        HttpServletRequest httpRequest) {
-//        try {
-//            UUID currentUserId = contextAccessor.getCurrentUserId(httpRequest);
-//            OrderResDTO res = orderService.checkout(currentUserId, request, paymentService);
-//            return ResponseEntity.status(HttpStatus.CREATED)
-//                    .body(ApiResponse.success("Order placed successfully", res));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                    .body(ApiResponse.error("Checkout failed: " + e.getMessage()));
-//        }
-//    }
+    @PostMapping("/checkout")
+    public ResponseEntity<ApiResponse<OrderResDTO>> checkout(@Valid @RequestBody OrderReqDTO request,
+        HttpServletRequest httpRequest) {
+        try {
+            UUID currentUserId = contextAccessor.getCurrentUserId(httpRequest);
+            OrderResDTO res = mapToResDTO(orderService.checkout(currentUserId, request, paymentService));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("Order placed successfully", res));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error("Checkout failed: " + e.getMessage()));
+        }
+    }
 
     @GetMapping("/")
     public ResponseEntity<ApiResponse<List<OrderResDTO>>> getUserOrders(HttpServletRequest request) {

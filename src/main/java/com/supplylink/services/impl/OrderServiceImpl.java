@@ -1,14 +1,21 @@
 package com.supplylink.services.impl;
 
+import com.supplylink.dtos.req.OrderReqDTO;
+import com.supplylink.dtos.res.PaymentResponse;
+import com.supplylink.models.CartItem;
 import com.supplylink.models.Order;
+import com.supplylink.models.OrderItem;
+import com.supplylink.models.User;
 import com.supplylink.models.enums.OrderStatus;
 import com.supplylink.repositories.*;
 import com.supplylink.services.OrderService;
+import com.supplylink.services.PaymentService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +25,6 @@ public class OrderServiceImpl implements OrderService {
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
-    private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
     @Autowired
@@ -26,47 +32,45 @@ public class OrderServiceImpl implements OrderService {
             CartItemRepository cartItemRepository,
             OrderRepository orderRepository,
             OrderItemRepository orderItemRepository,
-            ProductRepository productRepository,
             UserRepository userRepository
     ) {
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
-        this.productRepository = productRepository;
         this.userRepository = userRepository;
     }
 
-//    @Transactional
-//    @Override
-//    public Order checkout(UUID userId, OrderReqDTO request, PaymentService paymentService) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        List<CartItem> cartItems = cartItemRepository.findByUserId(userId);
-//        if (cartItems.isEmpty()) {
-//            throw new RuntimeException("Cart is empty");
-//        }
-//
-//        BigDecimal totalAmount = cartItems.stream()
-//                .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
-//                .reduce(BigDecimal.ZERO, BigDecimal::add);
-//
-//        PaymentResponse paymentResponse = paymentService.processPayment(userId, totalAmount);
-//        if (!"SUCCESS".equals(paymentResponse.getStatus())) {
-//            throw new RuntimeException("Payment failed");
-//        }
-//
-//        Order order = new Order(user, totalAmount, OrderStatus.PENDING, request.getShippingAddress());
-//        order = orderRepository.save(order);
-//
-//        for (CartItem item : cartItems) {
-//            OrderItem orderItem = new OrderItem(order, item.getProduct(), item.getQuantity(), item.getProduct().getPrice());
-//            orderItemRepository.save(orderItem);
-//        }
-//
-//        cartItemRepository.deleteAllByUserId(userId);
-//        return order;
-//    }
+    @Transactional
+    @Override
+    public Order checkout(UUID userId, OrderReqDTO request, PaymentService paymentService) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<CartItem> cartItems = cartItemRepository.findByUserId(userId);
+        if (cartItems.isEmpty()) {
+            throw new RuntimeException("Cart is empty");
+        }
+
+        BigDecimal totalAmount = cartItems.stream()
+                .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        PaymentResponse paymentResponse = paymentService.processPayment(userId, totalAmount);
+        if (!"SUCCESS".equals(paymentResponse.getStatus())) {
+            throw new RuntimeException("Payment failed");
+        }
+
+        Order order = new Order(user, totalAmount, OrderStatus.PENDING, request.getShippingAddress());
+        order = orderRepository.save(order);
+
+        for (CartItem item : cartItems) {
+            OrderItem orderItem = new OrderItem(order, item.getProduct(), item.getQuantity(), item.getProduct().getPrice());
+            orderItemRepository.save(orderItem);
+        }
+
+        cartItemRepository.deleteAllByUserId(userId);
+        return order;
+    }
 
     @Override
     public List<Order> getUserOrders(UUID userId) {
