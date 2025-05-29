@@ -112,6 +112,9 @@ public class CartController {
         dto.setPrice(entity.getProduct().getPrice());
         dto.setQuantity(entity.getQuantity());
         dto.setTotal(entity.getProduct().getPrice().multiply(BigDecimal.valueOf(entity.getQuantity())));
+        dto.setCurrency(entity.getCurrency());
+        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setUpdatedAt(entity.getUpdatedAt());
         return dto;
     }
 }

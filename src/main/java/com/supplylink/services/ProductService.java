@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +24,9 @@ public interface ProductService {
             Double minPrice,
             Double maxPrice,
             String keyword,
+            Integer minQuantity,
+            Date createdAfter,
+            Double minRating,
             Pageable pageable
     );
 }

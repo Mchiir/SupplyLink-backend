@@ -9,6 +9,7 @@ public class OrderItemResDTO {
     private BigDecimal price;
     private Integer quantity;
     private BigDecimal total;
+    private String currency;
 
     public UUID getProductId() {
         return productId;
@@ -48,5 +49,13 @@ public class OrderItemResDTO {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

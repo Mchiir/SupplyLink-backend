@@ -3,6 +3,7 @@ package com.supplylink.specifications;
 import com.supplylink.models.Product;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class ProductSpecification {
@@ -38,5 +39,18 @@ public class ProductSpecification {
                 cb.like(cb.lower(root.get("description")), pattern)
             );
         };
+    }
+
+    public static Specification<Product> hasMinimumQuantity(int minQuantity) {
+        return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("quantity"), minQuantity);
+    }
+
+    public static Specification<Product> createdAfter(Date date) {
+        return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("createdAt"), date);
+    }
+
+    public static Specification<Product> hasMinRating(Double minRating) {
+        return (root, query, cb) -> minRating == null ? null :
+                cb.greaterThanOrEqualTo(root.get("rating"), minRating);
     }
 }

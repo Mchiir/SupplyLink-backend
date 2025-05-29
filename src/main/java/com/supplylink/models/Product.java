@@ -3,6 +3,7 @@ package com.supplylink.models;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -25,14 +26,27 @@ public class Product {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @Column(nullable = false)
+    private Double rating = 0.0; // default to 0.0
+
+    @Column(nullable = false)
+    private String currency;
+
+    @Column(name = "created_at")
+    private Date createdAt = new Date();
+
+    @Column(name = "updated_at")
+    private Date updatedAt;
+
     public Product() {}
-    public Product(String name, String description, BigDecimal price, int quantity, Category category, Location location) {
+    public Product(String name, String description, BigDecimal price, int quantity, Category category, Location location, String currency) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
         this.category = category;
         this.location = location;
+        this.currency = currency;
     }
 
     public UUID getId() {
@@ -89,5 +103,36 @@ public class Product {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

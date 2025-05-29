@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -18,22 +19,26 @@ public class Payment {
 
     private BigDecimal amount;
 
+    @Column(nullable = false)
+    private String currency;
+
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus = PaymentStatus.PENDING; // SUCCESS, FAILED, PENDING
 
     private String transactionId; // From Stripe
-    private LocalDateTime timestamp;
+    private Date timestamp = new Date();
 
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     public Payment() {}
-    public Payment(String method, BigDecimal amount, PaymentStatus paymentStatus, String transactionId, LocalDateTime timestamp) {
+    public Payment(String method, BigDecimal amount, PaymentStatus paymentStatus, String transactionId, String currency) {
         this.method = method;
         this.amount = amount;
         this.paymentStatus = paymentStatus;
         this.transactionId = transactionId;
+        this.currency = currency;
     }
 
     public UUID getId() {
@@ -76,11 +81,11 @@ public class Payment {
         this.transactionId = transactionId;
     }
 
-    public LocalDateTime getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -90,5 +95,13 @@ public class Payment {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

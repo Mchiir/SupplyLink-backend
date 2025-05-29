@@ -1,71 +1,109 @@
 package com.supplylink.dtos.res;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.UUID;
 
 public class ProductResDTO {
 
-    private UUID Id;
-    private String Name;
-    private String Description;
-    private BigDecimal Price;
-    private Integer Quantity;
-    private UUID CategoryId;
-    private UUID LocationId;
+    private UUID id;
+    private String name;
+    private String description;
+    private BigDecimal price;
+    private Integer quantity;
+    private String currency;
+    private Double rating;
+    private UUID categoryId;
+    private UUID locationId;
+    private Date createdAt;
+    private Date updatedAt;
 
+    // Getters and setters
     public UUID getId() {
-        return Id;
+        return id;
     }
 
     public void setId(UUID id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public BigDecimal getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(BigDecimal price) {
-        Price = price;
+        this.price = price;
     }
 
     public Integer getQuantity() {
-        return Quantity;
+        return quantity;
     }
 
     public void setQuantity(Integer quantity) {
-        Quantity = quantity;
+        this.quantity = quantity;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
     public UUID getCategoryId() {
-        return CategoryId;
+        return categoryId;
     }
 
     public void setCategoryId(UUID categoryId) {
-        CategoryId = categoryId;
+        this.categoryId = categoryId;
     }
 
     public UUID getLocationId() {
-        return LocationId;
+        return locationId;
     }
 
     public void setLocationId(UUID locationId) {
-        LocationId = locationId;
+        this.locationId = locationId;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

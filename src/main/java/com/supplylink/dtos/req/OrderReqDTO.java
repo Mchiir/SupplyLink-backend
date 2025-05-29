@@ -6,25 +6,36 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public class OrderReqDTO {
-    @NotNull
+    @NotNull(message = "Order items are required")
     private List<CartItemReqDTO> items;
 
-    @NotNull
+    @NotNull(message = "Shipping address is required")
     private ShippingAddress shippingAddress;
 
-    public @NotNull List<CartItemReqDTO> getItems() {
+    @NotNull(message = "Currency is required")
+    private String currency;
+
+    public List<CartItemReqDTO> getItems() {
         return items;
     }
 
-    public void setItems(@NotNull List<CartItemReqDTO> items) {
+    public void setItems(List<CartItemReqDTO> items) {
         this.items = items;
     }
 
-    public @NotNull ShippingAddress getShippingAddress() {
+    public ShippingAddress getShippingAddress() {
         return shippingAddress;
     }
 
-    public void setShippingAddress(@NotNull ShippingAddress shippingAddress) {
+    public void setShippingAddress(ShippingAddress shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

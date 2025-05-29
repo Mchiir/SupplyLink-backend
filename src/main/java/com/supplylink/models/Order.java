@@ -20,35 +20,31 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
 
-    @Column(nullable = false)
-    private Date createdAt = new Date();
-
-    @Column(nullable = true)
-    private Date updatedAt;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
+    @Column(nullable = false)
+    private String currency;
+
     @Embedded
     private ShippingAddress shippingAddress;
 
+    @Column(nullable = false)
+    private Date createdAt = new Date();
+
+//    @Column(nullable = true)
+//    private Date updatedAt;
+
     public Order() {}
-    public Order(User user, OrderStatus status, Date createdAt, Date updatedAt, List<OrderItem> items, BigDecimal totalAmount, ShippingAddress shippingAddress) {
+    public Order(User user, OrderStatus status, List<OrderItem> items, BigDecimal totalAmount, ShippingAddress shippingAddress, String currency) {
         this.user = user;
         this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.items = items;
         this.totalAmount = totalAmount;
-        this.shippingAddress = shippingAddress;
-    }
-    public Order(User user, BigDecimal totalAmount, OrderStatus status, ShippingAddress shippingAddress) {
-        this.user = user;
-        this.status = status;
-        this.createdAt = new Date();
+        this.currency = currency;
         this.shippingAddress = shippingAddress;
     }
 
@@ -84,13 +80,13 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+//    public Date getUpdatedAt() {
+//        return updatedAt;
+//    }
+//
+//    public void setUpdatedAt(Date updatedAt) {
+//        this.updatedAt = updatedAt;
+//    }
 
     public List<OrderItem> getItems() {
         return items;
@@ -114,5 +110,13 @@ public class Order {
 
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

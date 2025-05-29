@@ -31,8 +31,9 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Optional<Location> getLocationById(UUID id) {
-        return locationRepository.findById(id);
+    public Location getLocationById(UUID id) {
+        return locationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No location found with id: " + id));
     }
 
     @Override
@@ -42,8 +43,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public Location updateLocation(UUID id, Location updated) {
-        Location location = getLocationById(id)
-                .orElseThrow(() -> new RuntimeException("No location found with id: " + id));
+        Location location = getLocationById(id);
 
         location.setDistrict(updated.getDistrict());
         location.setProvince(updated.getProvince());

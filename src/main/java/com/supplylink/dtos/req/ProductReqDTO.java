@@ -9,70 +9,92 @@ import java.util.UUID;
 public class ProductReqDTO {
 
     @NotBlank(message = "Name is mandatory")
-    private String Name;
+    private String name;
 
     @NotBlank(message = "Description is mandatory")
-    private String Description;
+    private String description;
 
     @NotNull(message = "Price is mandatory")
     @Positive(message = "Price must be positive")
-    private BigDecimal Price;
+    private BigDecimal price;
 
     @NotNull(message = "Quantity is mandatory")
     @Positive(message = "Quantity must be positive")
-    private Integer Quantity;
+    private Integer quantity;
+
+    @NotBlank(message = "Currency is mandatory")
+    private String currency;
 
     @NotNull(message = "CategoryId is mandatory")
-    private UUID CategoryId;
+    private UUID categoryId;
 
     @NotNull(message = "LocationId is mandatory")
-    private UUID LocationId;
+    private UUID locationId;
 
+    private Double rating = 0.0;
+
+    // Getters and setters
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public BigDecimal getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(BigDecimal price) {
-        Price = price;
+        this.price = price;
     }
 
     public Integer getQuantity() {
-        return Quantity;
+        return quantity;
     }
 
     public void setQuantity(Integer quantity) {
-        Quantity = quantity;
+        this.quantity = quantity;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public UUID getCategoryId() {
-        return CategoryId;
+        return categoryId;
     }
 
     public void setCategoryId(UUID categoryId) {
-        CategoryId = categoryId;
+        this.categoryId = categoryId;
     }
 
     public UUID getLocationId() {
-        return LocationId;
+        return locationId;
     }
 
     public void setLocationId(UUID locationId) {
-        LocationId = locationId;
+        this.locationId = locationId;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }

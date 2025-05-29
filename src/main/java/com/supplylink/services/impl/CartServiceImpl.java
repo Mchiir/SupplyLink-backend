@@ -11,6 +11,7 @@ import com.supplylink.services.CartService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,9 +44,13 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem;
         if (existing != null) {
             existing.setQuantity(existing.getQuantity() + request.getQuantity());
+            existing.setUpdatedAt(new Date());
             cartItem = existing;
         } else {
             cartItem = new CartItem(user, product, request.getQuantity());
+            Date now = new Date();
+            cartItem.setCreatedAt(now);
+            cartItem.setCurrency(product.getCurrency());
         }
 
         return cartItemRepository.save(cartItem);
@@ -57,6 +62,7 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new RuntimeException("Cart item not found"));
 
         item.setQuantity(quantity);
+        item.setUpdatedAt(new Date());
         return cartItemRepository.save(item);
     }
 

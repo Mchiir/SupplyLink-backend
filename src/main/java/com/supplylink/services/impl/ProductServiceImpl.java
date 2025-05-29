@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -47,8 +48,11 @@ public class ProductServiceImpl implements ProductService {
     public Product updateProduct(UUID id, Product updated) {
         Product product = getProductById(id);
         product.setName(updated.getName());
+        product.setDescription(updated.getDescription());
         product.setPrice(updated.getPrice());
+        product.setCurrency(updated.getCurrency());
         product.setQuantity(updated.getQuantity());
+        product.setRating(updated.getRating());
         product.setCategory(updated.getCategory());
         product.setLocation(updated.getLocation());
         return productRepository.save(product);
@@ -67,13 +71,19 @@ public class ProductServiceImpl implements ProductService {
             Double minPrice,
             Double maxPrice,
             String keyword,
+            Integer minQuantity,
+            Date createdAfter,
+            Double minRating,
             Pageable pageable) {
 
         Specification<Product> spec = Specification
                 .where(ProductSpecification.hasCategory(categoryId))
                 .and(ProductSpecification.hasLocation(locationId))
                 .and(ProductSpecification.priceBetween(minPrice, maxPrice))
-                .and(ProductSpecification.keywordContains(keyword));
+                .and(ProductSpecification.keywordContains(keyword))
+                .and(minQuantity != null ? ProductSpecification.hasMinimumQuantity(minQuantity) : null)
+                .and(createdAfter != null ? ProductSpecification.createdAfter(createdAfter) : null)
+                .and(ProductSpecification.hasMinRating(minRating));
 
         return productRepository.findAll(spec, pageable);
     }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -94,7 +95,7 @@ public class OrderController {
         try {
             UUID userId = contextAccessor.getCurrentUserId(request);
             orderService.cancelOrder(orderId, userId);
-            return ResponseEntity.ok(ApiResponse.success("Order cancelled successfully", null));
+            return ResponseEntity.ok(ApiResponse.success("Order cancelled successfully",null));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error("Cancellation failed: " + e.getMessage()));
         } catch (AccessDeniedException e) {
@@ -105,25 +106,25 @@ public class OrderController {
     }
 
     private OrderResDTO mapToResDTO(Order order) {
-        List<OrderItemResDTO> items = order.getItems().stream()
-                .map(item -> {
-                    OrderItemResDTO dto = new OrderItemResDTO();
-                    dto.setProductId(item.getProduct().getId());
-                    dto.setProductName(item.getProduct().getName());
-                    dto.setQuantity(item.getQuantity());
-                    dto.setPrice(item.getPrice());
-                    dto.setTotal(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
-                    return dto;
-                }).toList();
+        List<OrderItemResDTO> itemDTOs = order.getItems().stream().map(item -> {
+            OrderItemResDTO dto = new OrderItemResDTO();
+            dto.setProductId(item.getProduct().getId());
+            dto.setProductName(item.getProduct().getName());
+            dto.setQuantity(item.getQuantity());
+            dto.setPrice(item.getPrice());
+            dto.setCurrency(item.getCurrency());
+            dto.setTotal(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            return dto;
+        }).collect(Collectors.toList());
 
-        OrderResDTO resDTO = new OrderResDTO();
-        resDTO.setOrderId(order.getId());
-        resDTO.setCreatedAt(order.getCreatedAt());
-        resDTO.setStatus(order.getStatus());
-        resDTO.setItems(items);
-        resDTO.setTotalAmount(order.getTotalAmount());
-        resDTO.setShippingAddress(order.getShippingAddress());
-
-        return resDTO;
+        OrderResDTO dto = new OrderResDTO();
+        dto.setOrderId(order.getId());
+        dto.setCreatedAt(order.getCreatedAt());
+        dto.setStatus(order.getStatus());
+        dto.setItems(itemDTOs); // from above
+        dto.setTotalAmount(order.getTotalAmount());
+        dto.setShippingAddress(order.getShippingAddress());
+        dto.setCurrency(order.getCurrency());
+        return dto;
     }
 }

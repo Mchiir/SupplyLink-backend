@@ -1,15 +1,18 @@
 package com.supplylink.dtos.res;
 
+import com.supplylink.models.enums.PaymentStatus;
+
 import java.math.BigDecimal;
 
 public class PaymentResponse {
     private String method;
     private String transactionId;
-    private String status;
+    private PaymentStatus status;
     private BigDecimal amount;
 
     public PaymentResponse() {}
-    public PaymentResponse(String method, String transactionId, String status, BigDecimal amount) {
+
+    public PaymentResponse(String method, String transactionId, PaymentStatus status, BigDecimal amount) {
         this.method = method;
         this.transactionId = transactionId;
         this.status = status;
@@ -32,11 +35,11 @@ public class PaymentResponse {
         this.transactionId = transactionId;
     }
 
-    public String getStatus() {
+    public PaymentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PaymentStatus status) {
         this.status = status;
     }
 

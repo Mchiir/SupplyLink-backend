@@ -15,6 +15,7 @@ public class OrderResDTO {
     private List<OrderItemResDTO> items;
     private BigDecimal totalAmount;
     private ShippingAddress shippingAddress;
+    private String currency;
 
     public UUID getOrderId() {
         return orderId;
@@ -62,5 +63,13 @@ public class OrderResDTO {
 
     public void setShippingAddress(ShippingAddress shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

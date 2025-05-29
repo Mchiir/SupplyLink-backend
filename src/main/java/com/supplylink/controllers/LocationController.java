@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class LocationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<LocationDTO>> getLocationById(@PathVariable UUID id) {
-        return locationService.getLocationById(id)
+        return Optional.ofNullable(locationService.getLocationById(id))
                 .map(loc -> ResponseEntity.ok(ApiResponse.success("Found", modelMapper.map(loc, LocationDTO.class))))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error("Location not found")));
     }

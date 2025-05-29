@@ -7,12 +7,14 @@ import com.supplylink.models.Order;
 import com.supplylink.models.OrderItem;
 import com.supplylink.models.User;
 import com.supplylink.models.enums.OrderStatus;
+import com.supplylink.models.enums.PaymentStatus;
 import com.supplylink.repositories.*;
 import com.supplylink.services.OrderService;
 import com.supplylink.services.PaymentService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,19 +26,16 @@ public class OrderServiceImpl implements OrderService {
 
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
 
     @Autowired
     public OrderServiceImpl(
             CartItemRepository cartItemRepository,
             OrderRepository orderRepository,
-            OrderItemRepository orderItemRepository,
             UserRepository userRepository
     ) {
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
         this.userRepository = userRepository;
     }
 
@@ -51,22 +50,30 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("Cart is empty");
         }
 
+        String currency = request.getCurrency();
         BigDecimal totalAmount = cartItems.stream()
                 .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         PaymentResponse paymentResponse = paymentService.processPayment(userId, totalAmount);
-        if (!"SUCCESS".equals(paymentResponse.getStatus())) {
+        if (!PaymentStatus.SUCCEEDED.equals(paymentResponse.getStatus())) {
             throw new RuntimeException("Payment failed");
         }
 
-        Order order = new Order(user, totalAmount, OrderStatus.PENDING, request.getShippingAddress());
-        order = orderRepository.save(order);
+        Order order = new Order();
+        order.setUser(user);
+        order.setStatus(OrderStatus.PENDING);
+        order.setTotalAmount(totalAmount);
+        order.setShippingAddress(request.getShippingAddress());
+        order.setCurrency(currency);
 
+        // Add order items to the order
         for (CartItem item : cartItems) {
-            OrderItem orderItem = new OrderItem(order, item.getProduct(), item.getQuantity(), item.getProduct().getPrice());
-            orderItemRepository.save(orderItem);
+            OrderItem orderItem = new OrderItem(order, item.getProduct(), item.getQuantity(), item.getProduct().getPrice(), currency);
+            order.getItems().add(orderItem); // Ensure proper relationship
         }
+
+        order = orderRepository.save(order); // Cascade saves order items
 
         cartItemRepository.deleteAllByUserId(userId);
         return order;
