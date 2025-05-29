@@ -26,6 +26,7 @@ public class Payment {
     private PaymentStatus paymentStatus = PaymentStatus.PENDING; // SUCCESS, FAILED, PENDING
 
     private String transactionId; // From Stripe
+
     private Date timestamp = new Date();
 
     @OneToOne

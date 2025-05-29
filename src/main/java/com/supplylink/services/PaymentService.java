@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Service
 public interface PaymentService {
-    PaymentResponse processPayment(UUID userId, BigDecimal amount);
+    PaymentResponse processPayment(UUID userId, BigDecimal amount, String currency);
 }

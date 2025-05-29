@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -36,6 +37,7 @@ public class OrderController {
     private ContextAccessor contextAccessor;
 
     @Autowired
+    @Qualifier("stripePaymentService")
     private PaymentService paymentService;
 
     @PostMapping("/checkout")
@@ -78,7 +80,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}/status")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SYSTEM') OR hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> updateOrderStatus(@PathVariable UUID orderId, @RequestParam OrderStatus status) {
         try {
             orderService.updateOrderStatus(orderId, status);

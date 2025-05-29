@@ -42,6 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Skip filtering for actuator and auth endpoints
         if (
                 request.getRequestURI().equals("/v3/api-docs") ||
+                request.getRequestURI().equals("/error") ||
                 request.getRequestURI().startsWith("/v3/api-docs") ||
                 request.getRequestURI().startsWith("/swagger-ui") ||
                 request.getRequestURI().startsWith("/api/auth") ||

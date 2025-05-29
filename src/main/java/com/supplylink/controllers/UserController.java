@@ -25,6 +25,7 @@ public class UserController {
 
     // Get All Users
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserRegistrationResDTO>>> getAllUsers() {
         List<UserRegistrationResDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
@@ -57,6 +58,7 @@ public class UserController {
 
     // Delete User
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('SYSTEM') OR hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable UUID id) {
         try {
             userService.deleteUser(id);

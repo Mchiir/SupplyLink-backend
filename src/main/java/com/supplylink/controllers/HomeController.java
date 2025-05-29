@@ -18,7 +18,6 @@ public class HomeController {
 
     @GetMapping("/error")
     public ResponseEntity<ApiResponse<String>> errorHandler() {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error("An error occurred, this is a fallback message"));
+        return ResponseEntity.ok(ApiResponse.error("An error occurred, this is a fallback message"));
     }
 }

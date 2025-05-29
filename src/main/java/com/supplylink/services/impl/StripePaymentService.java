@@ -1,9 +1,11 @@
-package com.supplylink.services;
+package com.supplylink.services.impl;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.supplylink.dtos.res.PaymentResponse;
+import com.supplylink.models.enums.PaymentStatus;
+import com.supplylink.services.PaymentService;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
@@ -32,18 +34,22 @@ public class StripePaymentService implements PaymentService {
     }
 
     @Override
-    public PaymentResponse processPayment(UUID userId, BigDecimal amount) {
+    public PaymentResponse processPayment(UUID userId, BigDecimal amount, String currency) {
+        final int CENT_MULTIPLIER = 100;
+        final String PAYMENT_METHOD_CARD = "card";
+        final String PROVIDER_NAME = "stripe";
         try {
+
             Map<String, Object> params = new HashMap<>();
-            params.put("amount", amount.multiply(BigDecimal.valueOf(100)).longValue()); // in cents
-            params.put("currency", "usd");
-            params.put("payment_method_types", List.of("card"));
+            params.put("amount", amount.multiply(BigDecimal.valueOf(CENT_MULTIPLIER)).longValue()); // in cents
+            params.put("currency", currency);
+            params.put("payment_method_types", List.of(PAYMENT_METHOD_CARD));
 
             PaymentIntent intent = PaymentIntent.create(params);
 
-            return new PaymentResponse("stripe", intent.getId(), "SUCCESS", amount);
+            return new PaymentResponse(PROVIDER_NAME, intent.getId(), PaymentStatus.SUCCEEDED, amount, currency);
         } catch (StripeException e) {
-            return new PaymentResponse("stripe", null, "FAILED", amount);
+            return new PaymentResponse(PROVIDER_NAME, null, PaymentStatus.FAILED, amount, currency);
         }
     }
 }

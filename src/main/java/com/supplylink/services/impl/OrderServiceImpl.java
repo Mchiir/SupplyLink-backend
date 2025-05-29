@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
                 .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        PaymentResponse paymentResponse = paymentService.processPayment(userId, totalAmount);
+        PaymentResponse paymentResponse = paymentService.processPayment(userId, totalAmount, currency);
         if (!PaymentStatus.SUCCEEDED.equals(paymentResponse.getStatus())) {
             throw new RuntimeException("Payment failed");
         }
@@ -63,9 +63,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setUser(user);
         order.setStatus(OrderStatus.PENDING);
-        order.setTotalAmount(totalAmount);
-        order.setShippingAddress(request.getShippingAddress());
-        order.setCurrency(currency);
 
         // Add order items to the order
         for (CartItem item : cartItems) {
@@ -73,9 +70,13 @@ public class OrderServiceImpl implements OrderService {
             order.getItems().add(orderItem); // Ensure proper relationship
         }
 
+        order.setTotalAmount(totalAmount);
+        order.setCurrency(currency);
+        order.setShippingAddress(request.getShippingAddress());
+
         order = orderRepository.save(order); // Cascade saves order items
 
-        cartItemRepository.deleteAllByUserId(userId);
+        cartItemRepository.deleteAllByUserId(userId); // now clear cart
         return order;
     }
 

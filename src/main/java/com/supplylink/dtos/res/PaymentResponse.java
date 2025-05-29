@@ -9,14 +9,15 @@ public class PaymentResponse {
     private String transactionId;
     private PaymentStatus status;
     private BigDecimal amount;
+    private String currency;
 
     public PaymentResponse() {}
-
-    public PaymentResponse(String method, String transactionId, PaymentStatus status, BigDecimal amount) {
+    public PaymentResponse(String method, String transactionId, PaymentStatus status, BigDecimal amount, String currency) {
         this.method = method;
         this.transactionId = transactionId;
         this.status = status;
         this.amount = amount;
+        this.currency = currency;
     }
 
     public String getMethod() {
@@ -49,5 +50,13 @@ public class PaymentResponse {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
