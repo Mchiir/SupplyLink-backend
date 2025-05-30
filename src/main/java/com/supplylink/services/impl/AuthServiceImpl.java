@@ -17,6 +17,7 @@ import com.supplylink.services.EmailService;
 import com.supplylink.validations.AuthReqValidator;
 import com.supplylink.validations.UserReqDTOValidator;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,7 +41,10 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
+
+    @Qualifier("smtpEmailSender")
     private final EmailService emailService;
+
     private final AuthReqValidator authReqValidator;
     private final UserReqDTOValidator userReqDTOValidator;
 
