@@ -4,6 +4,10 @@
 
 - [Spring security]()
 
+- [Mailgun with Javamail meduim guide](https://medium.com/@tericcabrel/send-email-in-spring-boot-with-thymeleaf-and-mailgun-15e1b9dab328) for sending email notifications
+
+- [Stripe payment with springboot kinsta guide](https://kinsta.com/blog/stripe-java-api/)
+
 ---
 
 Please check well the spring version and check springdoc version, and stick to using CLI during debug sessions
