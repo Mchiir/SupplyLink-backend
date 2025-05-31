@@ -16,6 +16,7 @@ import com.supplylink.services.AuthService;
 import com.supplylink.services.EmailService;
 import com.supplylink.validations.AuthReqValidator;
 import com.supplylink.validations.UserReqDTOValidator;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -41,8 +42,6 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
-
-    @Qualifier("smtpEmailSender")
     private final EmailService emailService;
 
     private final AuthReqValidator authReqValidator;
@@ -54,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
                            PasswordEncoder passwordEncoder,
                            UserRepository userRepository,
                            VerificationTokenRepository verificationTokenRepository,
-                           EmailService emailService,
+                           @Qualifier("smtpEmailSender") EmailService emailService,
                            AuthReqValidator authReqValidator,
                            UserReqDTOValidator userReqDTOValidator) {
         this.authenticationManager = authenticationManager;
@@ -141,6 +140,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public UserRegistrationResDTO registerUser(UserRegistrationReqDTO userRegistrationReqDTO) {
         try {
             userReqDTOValidator.validate(userRegistrationReqDTO);
