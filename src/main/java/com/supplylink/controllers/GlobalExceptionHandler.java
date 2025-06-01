@@ -1,4 +1,4 @@
-package com.supplylink.exceptions;
+package com.supplylink.controllers;
 
 import com.supplylink.dtos.res.ApiResponse;
 import org.springframework.http.HttpStatus;

@@ -2,6 +2,8 @@ package com.supplylink.security;
 
 import com.supplylink.auth.JwtAuthenticationEntryPoint;
 import com.supplylink.auth.JwtAuthenticationFilter;
+import com.supplylink.auth.JwtExceptionFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,6 +25,9 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 @EnableWebSecurity // to use below sec customization
 @EnableMethodSecurity // required for method's security anotations
 public class SecurityConfig {
+
+    @Autowired
+    private JwtExceptionFilter jwtExceptionFilter;
 
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAuthenticationFilter authenticationFilter;
@@ -59,6 +64,7 @@ public class SecurityConfig {
                     authorize.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll();
                     authorize.anyRequest().authenticated();
                 })
+                .addFilterBefore(jwtExceptionFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults());
 
         http.exceptionHandling(exception -> exception

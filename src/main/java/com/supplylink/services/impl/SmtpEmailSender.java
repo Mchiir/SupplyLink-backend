@@ -61,8 +61,8 @@ public class SmtpEmailSender implements EmailService {
         email.setText(htmlContent, true);
 
         // Add inline image if needed
-        ClassPathResource clr = new ClassPathResource(SPRING_LOGO_IMAGE);
-        email.addInline("springLogo", clr, PNG_MIME);
+//        ClassPathResource clr = new ClassPathResource(SPRING_LOGO_IMAGE);
+//        email.addInline("springLogo", clr, PNG_MIME);
 
         mailSender.send(mimeMessage);
     }
