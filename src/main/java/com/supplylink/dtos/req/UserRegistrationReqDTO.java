@@ -1,5 +1,6 @@
 package com.supplylink.dtos.req;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.supplylink.dtos.LocationDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,17 +25,18 @@ public class UserRegistrationReqDTO {
     private String password;
 
     @NotNull
-    private LocationDTO locationDTO;
+    @JsonProperty("location")
+    private LocationDTO location;
 
     public UserRegistrationReqDTO() {}
 
-    public UserRegistrationReqDTO(String firstName, String lastName, String email, String phoneNumber, String password, LocationDTO locationDTO) {
+    public UserRegistrationReqDTO(String firstName, String lastName, String email, String phoneNumber, String password, LocationDTO location) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.locationDTO = locationDTO;
+        this.location = location;
     }
 
     // Getters and Setters
@@ -79,11 +81,11 @@ public class UserRegistrationReqDTO {
         this.password = password;
     }
 
-    public LocationDTO getLocationDTO() {
-        return locationDTO;
+    public LocationDTO getLocation() {
+        return location;
     }
 
-    public void setLocationDTO(LocationDTO location) {
-        this.locationDTO = location;
+    public void setLocation(LocationDTO location) {
+        this.location = location;
     }
 }
