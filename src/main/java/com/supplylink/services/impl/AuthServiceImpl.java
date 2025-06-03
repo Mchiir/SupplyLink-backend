@@ -131,8 +131,8 @@ public class AuthServiceImpl implements AuthService {
                 throw new InvalidRequestException("User account not found or not yet verified");
             return userRepository.existsByEmail(email);
         } else if (!phoneNumber.isEmpty()) {
-            if(!userRepository.existsByPhoneNumberAndVerifiedTrue(phoneNumber))
-                throw new InvalidRequestException("User account not found or not yet verified");
+//            if(!userRepository.existsByPhoneNumberAndVerifiedTrue(phoneNumber))
+//                throw new InvalidRequestException("User account not found or not yet verified");
             return userRepository.existsByPhoneNumber(phoneNumber);
         }
 
@@ -155,7 +155,7 @@ public class AuthServiceImpl implements AuthService {
                 throw new InvalidRequestException("Phone number already in use");
             }
 
-            LocationDTO locationDTO = userRegistrationReqDTO.getLocationDTO();
+            LocationDTO locationDTO = userRegistrationReqDTO.getLocation();
             Location location = new Location(locationDTO.getDistrict(), locationDTO.getProvince(), locationDTO.getCountry());
 
             User newUser = modelMapper.map(userRegistrationReqDTO, User.class);
@@ -179,8 +179,9 @@ public class AuthServiceImpl implements AuthService {
             ); // expire in 24 hours
             verificationTokenRepository.save(verificationToken);
 
-            // Send verification email
-            emailService.sendVerificationEmail(savedUser, token);
+            // Send verification email if email is provided
+            if(savedUser.getEmail() != null && !savedUser.getEmail().isEmpty())
+                emailService.sendVerificationEmail(savedUser, token);
 
             return modelMapper.map(savedUser, UserRegistrationResDTO.class);
 
