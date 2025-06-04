@@ -40,7 +40,7 @@ public class SmtpEmailSender implements EmailService {
 
     @Override
     public void sendVerificationEmail(User user, String token) throws MessagingException, UnsupportedEncodingException {
-        String confirmationUrl = "http://localhost:9000/api/auth/verify?token=" + token;
+        String confirmationUrl = "http://localhost:9000/api/auth/verifyEmail?token=" + token;
 
         String mailFrom = environment.getProperty("spring.mail.properties.mail.smtp.from");
         String mailFromName = environment.getProperty("mail.from.name", "Default");
