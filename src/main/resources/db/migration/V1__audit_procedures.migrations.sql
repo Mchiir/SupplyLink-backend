@@ -2,13 +2,21 @@
 CREATE OR REPLACE FUNCTION audit_products_insert()
 RETURNS TRIGGER AS $$
 BEGIN
-INSERT INTO audit_logs (table_name, operation, record_id, new_data, triggered_by)
+INSERT INTO audit_logs (
+    table_name,
+    operation,
+    record_id,
+    new_data,
+    triggered_by,
+    timestamp
+)
 VALUES (
            'products',
            'INSERT',
            NEW.id,
-           row_to_json(NEW),
-           current_user
+           to_jsonb(NEW),
+           current_user,
+           CURRENT_TIMESTAMP
        );
 RETURN NEW;
 END;
@@ -18,14 +26,23 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION audit_products_update()
 RETURNS TRIGGER AS $$
 BEGIN
-INSERT INTO audit_logs (table_name, operation, record_id, old_data, new_data, triggered_by)
+INSERT INTO audit_logs (
+    table_name,
+    operation,
+    record_id,
+    old_data,
+    new_data,
+    triggered_by,
+    timestamp
+)
 VALUES (
            'products',
            'UPDATE',
            NEW.id,
-           row_to_json(OLD),
-           row_to_json(NEW),
-           current_user
+           to_jsonb(OLD),
+           to_jsonb(NEW),
+           current_user,
+           CURRENT_TIMESTAMP
        );
 RETURN NEW;
 END;
@@ -35,13 +52,21 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION audit_products_delete()
 RETURNS TRIGGER AS $$
 BEGIN
-INSERT INTO audit_logs (table_name, operation, record_id, old_data, triggered_by)
+INSERT INTO audit_logs (
+    table_name,
+    operation,
+    record_id,
+    old_data,
+    triggered_by,
+    timestamp
+)
 VALUES (
            'products',
            'DELETE',
            OLD.id,
-           row_to_json(OLD),
-           current_user
+           to_jsonb(OLD),
+           current_user,
+           CURRENT_TIMESTAMP
        );
 RETURN OLD;
 END;

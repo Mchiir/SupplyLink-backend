@@ -1,5 +1,6 @@
 package com.supplylink.controllers;
 
+import com.supplylink.dtos.req.TwilioRequest;
 import com.supplylink.dtos.req.UserLoginReqDTO;
 import com.supplylink.dtos.req.UserRegistrationReqDTO;
 import com.supplylink.dtos.res.ApiResponse;
@@ -11,12 +12,14 @@ import com.supplylink.models.VerificationToken;
 import com.supplylink.repositories.UserRepository;
 import com.supplylink.repositories.VerificationTokenRepository;
 import com.supplylink.services.AuthService;
+import com.supplylink.services.SmsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 
@@ -31,6 +34,8 @@ public class AuthController {
     private VerificationTokenRepository verificationTokenRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SmsService smsService;
 
     // Register User
     @PostMapping("/registerUser")
@@ -53,7 +58,7 @@ public class AuthController {
     }
 
     // Verify email token
-    @GetMapping("/verify")
+    @GetMapping("/verifyEmail")
     public ResponseEntity<?> verifyAccount(@RequestParam String token) {
         try {
             VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
@@ -91,6 +96,17 @@ public class AuthController {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(ApiResponse.error("Login failed: " + ex.getMessage()));
+        }
+    }
+
+    @PostMapping("/verifyPhone")
+    @PreAuthorize("hasRole('SYSTEM')")
+    public ResponseEntity<String> verifyPhone(@Valid @RequestBody TwilioRequest request) {
+        try{
+            smsService.sendSms(request);
+            return ResponseEntity.ok("Sms sent successfully");
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 }
