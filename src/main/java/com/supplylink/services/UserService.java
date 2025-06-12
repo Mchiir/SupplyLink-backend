@@ -4,6 +4,8 @@ package com.supplylink.services;
 import com.supplylink.dtos.req.UserRegistrationReqDTO;
 import com.supplylink.dtos.res.UserRegistrationResDTO;
 import com.supplylink.models.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.UUID;
 
 @Service
 public interface UserService {
-    List<UserRegistrationResDTO> getAllUsers();
+    Page<User> getAllUsers(Pageable pageable);
     UserRegistrationResDTO getUserById(UUID id);
     UserRegistrationResDTO updateUser(UUID id, UserRegistrationReqDTO userRegistrationReqDTO);
     void deleteUser(UUID id);

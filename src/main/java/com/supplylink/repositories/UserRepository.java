@@ -2,6 +2,9 @@ package com.supplylink.repositories;
 
 import com.supplylink.models.User;
 import jakarta.validation.constraints.NotBlank;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,4 +25,6 @@ public interface UserRepository extends CrudRepository<User, UUID> {
     boolean existsByEmailAndVerifiedTrue(@NotBlank String email);
     boolean existsByPhoneNumberAndVerifiedTrue(@NotBlank String phoneNumber);
     boolean existsByEmailAndPhoneNumberAndVerifiedTrue(@NotBlank String email, String phoneNumber);
+
+    Page<User> findAll(Pageable pageable);
 }
