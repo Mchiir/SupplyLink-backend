@@ -23,7 +23,7 @@ public class ProductReqDTO {
     private Integer quantity;
 
     @NotBlank(message = "Currency is mandatory")
-    private String currency;
+    private String currency = "RWF";
 
     @NotNull(message = "CategoryId is mandatory")
     private UUID categoryId;

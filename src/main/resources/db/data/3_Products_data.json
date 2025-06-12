@@ -4,39 +4,39 @@
         "description": "Ergonomic wooden chair",
         "price": 45.99,
         "quantity": 10,
-        "categoryId": "e45b2f20-c490-4795-88d2-c1588ff52d7a",
-        "locationId": "686d0ba8-5573-4927-a1a8-d7196010c3e9"
+        "categoryId": "9d041e13-d69c-4672-8f1e-52b530bd9261",
+        "locationId": "1335fc07-ba7d-4b72-9576-e0fec9ae11b2"
     },
     {
         "name": "Cement Bag",
         "description": "50kg Portland cement",
         "price": 8.50,
         "quantity": 50,
-        "categoryId": "5da1e71a-5063-4ea2-ab42-f2c98e8af247",
-        "locationId": "a63daca4-7120-450b-8944-a3b9e63a3787"
+        "categoryId": "e9464375-e857-4c89-817f-7d08724e089b",
+        "locationId": "d24c1aa7-d985-4fe3-abc8-32df6cbbb2bd"
     },
     {
         "name": "Hammer",
         "description": "Steel claw hammer",
         "price": 12.00,
         "quantity": 30,
-        "categoryId": "10aa005f-e047-4ccf-95bf-e959ec7c312d",
-        "locationId": "4ebb2a0f-a52a-4d01-b21d-7e417cc47c76"
+        "categoryId": "e082f3d6-d962-41ab-b149-48275cdb3880",
+        "locationId": "4e730b83-9de1-4bca-970f-9224c534665f"
     },
     {
         "name": "Maize Seeds",
         "description": "Hybrid maize seeds pack",
         "price": 5.75,
         "quantity": 100,
-        "categoryId": "debe66dc-c836-4231-a0a4-1d711e00d39d",
-        "locationId": "79fcb95a-e96f-424b-8d97-e5150f0bacfe"
+        "categoryId": "7fb56f34-1ce5-4317-b9eb-960248f70f51",
+        "locationId": "6599e2f7-dd2a-413a-857d-07b90e10e453"
     },
     {
         "name": "Smartphone",
         "description": "Latest model smartphone",
         "price": 299.99,
         "quantity": 20,
-        "categoryId": "807b8b9f-661f-4dbf-b54f-caa9c924eff5",
+        "categoryId": "61f24ef2-61f3-4152-9a30-910f7057f713",
         "locationId": "28b71b99-c655-48c9-8faf-69ca15bcd3f2"
     },
     {
@@ -44,7 +44,7 @@
         "description": "Cotton unisex T-shirt",
         "price": 9.99,
         "quantity": 200,
-        "categoryId": "ca74a51a-ea91-483f-aa2a-5d707a28a25d",
+        "categoryId": "ae42db6a-4f4b-49a5-9ef1-3551141f6e59",
         "locationId": "5f84c115-cf12-4954-947b-c9672b6ebb61"
     },
     {
@@ -52,7 +52,7 @@
         "description": "12V maintenance-free battery",
         "price": 85.00,
         "quantity": 15,
-        "categoryId": "ff26cf13-d49a-444b-936e-c0ec8bd81ecd",
+        "categoryId": "bc058798-d669-458b-8945-98bbe0ae4c4a",
         "locationId": "d104cc60-3867-4fc5-83f8-368fdcdb1684"
     },
     {
@@ -60,7 +60,7 @@
         "description": "Bestselling fiction novel",
         "price": 14.50,
         "quantity": 40,
-        "categoryId": "dab2d720-67b0-4411-bad3-b701f71f378e",
+        "categoryId": "2f70d404-8b93-461e-973d-b04152bf62aa",
         "locationId": "8e45a5da-fe9e-462f-8648-017348d7ca51"
     },
     {
@@ -68,7 +68,7 @@
         "description": "1000mg Vitamin C tablets",
         "price": 7.25,
         "quantity": 60,
-        "categoryId": "ebe9126e-fcae-424a-bce8-ef47bb2609e4",
+        "categoryId": "b4a51cd7-1bf5-4607-ac70-bf97089d6f9c",
         "locationId": "072a99e9-0806-4af7-a838-240dc173fba7"
     },
     {
@@ -76,7 +76,7 @@
         "description": "Standard size football",
         "price": 19.99,
         "quantity": 25,
-        "categoryId": "0e0e6749-c4f2-4d90-acfb-7156ec7757c9",
+        "categoryId": "ffa4f091-f6a2-4782-9b5c-593538e01e22",
         "locationId": "eb2dc01c-43d2-4d08-9bd7-5f05b9a2221f"
     },
     {
@@ -84,16 +84,16 @@
         "description": "6-seater wooden dining table",
         "price": 120.00,
         "quantity": 5,
-        "categoryId": "e45b2f20-c490-4795-88d2-c1588ff52d7a",
-        "locationId": "5741d7f9-9596-49cd-ba9a-e6c1c433400d"
+        "categoryId": "9d041e13-d69c-4672-8f1e-52b530bd9261",
+        "locationId": "8b74512a-d24b-447e-8ba0-e370a4e794d4"
     },
     {
         "name": "Bricks Pack",
         "description": "Pack of 100 clay bricks",
         "price": 30.00,
         "quantity": 20,
-        "categoryId": "5da1e71a-5063-4ea2-ab42-f2c98e8af247",
-        "locationId": "d1f0789b-8069-4995-8dd1-1ef3b9ada27b"
+        "categoryId": "e9464375-e857-4c89-817f-7d08724e089b",
+        "locationId": "4bb4b78a-0773-412b-86c7-6733bb5bced9"
     },
     {
         "name": "Saw",
@@ -108,23 +108,23 @@
         "description": "Organic compost fertilizer",
         "price": 10.00,
         "quantity": 80,
-        "categoryId": "debe66dc-c836-4231-a0a4-1d711e00d39d",
-        "locationId": "d8865f4e-278a-41f0-b7fc-84d6c1235668"
+        "categoryId": "7fb56f34-1ce5-4317-b9eb-960248f70f51",
+        "locationId": "284baa19-4162-461e-a234-c00ec4c6ec47"
     },
     {
         "name": "Laptop",
         "description": "15-inch laptop with SSD",
         "price": 750.00,
         "quantity": 10,
-        "categoryId": "807b8b9f-661f-4dbf-b54f-caa9c924eff5",
-        "locationId": "d798feb3-0544-4247-a7f1-dbc79dc4d2bb"
+        "categoryId": "61f24ef2-61f3-4152-9a30-910f7057f713",
+        "locationId": "035fdccf-1879-4fb0-9a64-9bf76e988b4f"
     },
     {
         "name": "Jeans",
         "description": "Denim jeans for men",
         "price": 25.00,
         "quantity": 60,
-        "categoryId": "ca74a51a-ea91-483f-aa2a-5d707a28a25d",
+        "categoryId": "ae42db6a-4f4b-49a5-9ef1-3551141f6e59",
         "locationId": "5bfb5c0f-4796-4e17-8a76-dbfdbdc5ff0f"
     },
     {
@@ -132,23 +132,23 @@
         "description": "5L synthetic engine oil",
         "price": 40.00,
         "quantity": 25,
-        "categoryId": "ff26cf13-d49a-444b-936e-c0ec8bd81ecd",
-        "locationId": "ca87881d-c69f-4a74-9683-fbed5ec2d3eb"
+        "categoryId": "bc058798-d669-458b-8945-98bbe0ae4c4a",
+        "locationId": "9859160a-5a33-4d71-a25b-b0d4e836805b"
     },
     {
         "name": "Cookbook",
         "description": "Healthy recipes cookbook",
         "price": 18.00,
         "quantity": 30,
-        "categoryId": "dab2d720-67b0-4411-bad3-b701f71f378e",
-        "locationId": "fa0dcf5b-3a80-48cb-8a0e-a2b4764bd9a4"
+        "categoryId": "2f70d404-8b93-461e-973d-b04152bf62aa",
+        "locationId": "705be4d9-9bc8-4d7d-9d8e-817a512fab31"
     },
     {
         "name": "First Aid Kit",
         "description": "Comprehensive first aid kit",
         "price": 22.00,
         "quantity": 40,
-        "categoryId": "ebe9126e-fcae-424a-bce8-ef47bb2609e4",
-        "locationId": "78ddf355-1d94-46bb-a822-093d856d8a35"
+        "categoryId": "b4a51cd7-1bf5-4607-ac70-bf97089d6f9c",
+        "locationId": "ded85aaf-a776-4fb4-ae7a-01e7bd062d0b"
     }
 ]
