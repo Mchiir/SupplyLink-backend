@@ -13,15 +13,14 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +40,8 @@ public class ProductController {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<ProductResDTO>>> getAllProducts() {
         List<ProductResDTO> products = productService.getAllProducts()
                 .stream()
@@ -50,7 +50,7 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.success("Fetched all", products));
     }
 
-    @GetMapping("/search")
+    @GetMapping
     public ResponseEntity<ApiResponse<Page<ProductResDTO>>> searchProducts(
             @RequestParam(required = false) UUID categoryId,
             @RequestParam(required = false) UUID locationId,
@@ -60,10 +60,30 @@ public class ProductController {
             @RequestParam(required = false) Integer minQuantity,
             @RequestParam(required = false) Date createdAfter,
             @RequestParam(required = false) Double minRating,
-            @PageableDefault(page = 0, size = 10) Pageable pageable
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction
     ) {
-        Page<Product> products = productService.searchProducts(categoryId, locationId, minPrice, maxPrice, keyword, minQuantity, createdAfter,minRating, pageable);
+        Sort sort = direction.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Product> products = productService.searchProducts(
+                categoryId,
+                locationId,
+                minPrice,
+                maxPrice,
+                keyword,
+                minQuantity,
+                createdAfter,
+                minRating,
+                pageable);
+
         Page<ProductResDTO> dtoPage = products.map(p -> modelMapper.map(p, ProductResDTO.class));
+
         return ResponseEntity.ok(ApiResponse.success("Search results", dtoPage));
     }
 
