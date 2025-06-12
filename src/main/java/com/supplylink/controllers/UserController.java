@@ -3,8 +3,14 @@ package com.supplylink.controllers;
 import com.supplylink.dtos.res.ApiResponse;
 import com.supplylink.dtos.req.UserRegistrationReqDTO;
 import com.supplylink.dtos.res.UserRegistrationResDTO;
+import com.supplylink.models.User;
 import com.supplylink.services.UserService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,17 +24,29 @@ import java.util.*;
 public class UserController {
 
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     // Get All Users
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<List<UserRegistrationResDTO>>> getAllUsers() {
-        List<UserRegistrationResDTO> users = userService.getAllUsers();
-        return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
+    public ResponseEntity<ApiResponse<Page<UserRegistrationResDTO>>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending
+    ) {
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<User> users = userService.getAllUsers(pageable);
+        Page<UserRegistrationResDTO> paginatedResponse = users.map(user -> modelMapper.map(user, UserRegistrationResDTO.class));
+
+        return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", paginatedResponse));
     }
 
     // Get Single User

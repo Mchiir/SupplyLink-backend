@@ -14,6 +14,10 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -39,6 +43,8 @@ public class OrderController {
     @Autowired
     @Qualifier("stripePaymentService")
     private PaymentService paymentService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping("/checkout")
     public ResponseEntity<ApiResponse<OrderResDTO>> checkout(@Valid @RequestBody OrderReqDTO request,
@@ -54,13 +60,24 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/")
-    public ResponseEntity<ApiResponse<List<OrderResDTO>>> getUserOrders(HttpServletRequest request) {
+    @GetMapping
+    public ResponseEntity<ApiResponse<Page<OrderResDTO>>> getUserOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending,
+            HttpServletRequest request) {
         try {
             UUID userId = contextAccessor.getCurrentUserId(request);
-            List<Order> orders = orderService.getUserOrders(userId);
-            List<OrderResDTO> response = orders.stream().map(this::mapToResDTO).toList();
-            return ResponseEntity.ok(ApiResponse.success("Orders fetched", response));
+
+            Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+            Pageable pageable = PageRequest.of(page, size, sort);
+
+            Page<Order> orders = orderService.getUserOrders(userId, pageable);
+
+            Page<OrderResDTO> pagedResponse = orders.map(o -> modelMapper.map(o, OrderResDTO.class));
+            return ResponseEntity.ok(ApiResponse.success("Orders fetched", pagedResponse));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ApiResponse.error("Failed to fetch orders: " + e.getMessage()));

@@ -9,6 +9,8 @@ import com.supplylink.repositories.UserRepository;
 import com.supplylink.services.UserService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,10 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserRegistrationResDTO> getAllUsers() {
-        return ((List<User>) userRepository.findAll()).stream()
-                .map(user -> modelMapper.map(user, UserRegistrationResDTO.class))
-                .toList();
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override
