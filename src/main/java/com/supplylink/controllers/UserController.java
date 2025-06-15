@@ -53,7 +53,11 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserRegistrationResDTO>> getUserById(@PathVariable UUID id) {
         try {
-            UserRegistrationResDTO user = userService.getUserById(id);
+            UserRegistrationResDTO user = modelMapper.map(userService.getUserById(id), UserRegistrationResDTO.class);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(ApiResponse.error("User not found with ID: " + id));
+            }
             return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", user));
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -66,7 +70,8 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserRegistrationResDTO>> updateUser(@PathVariable UUID id,
                                                                           @Valid @RequestBody UserRegistrationReqDTO userRegistrationReqDTO) {
         try {
-            UserRegistrationResDTO updatedUser = userService.updateUser(id, userRegistrationReqDTO);
+            UserRegistrationResDTO updatedUser = modelMapper.map(
+                    userService.updateUser(id, userRegistrationReqDTO), UserRegistrationResDTO.class);
             return ResponseEntity.ok(ApiResponse.success("User updated successfully", updatedUser));
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

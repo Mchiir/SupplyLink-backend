@@ -12,6 +12,7 @@ import com.supplylink.repositories.UserRepository;
 import com.supplylink.repositories.VerificationTokenRepository;
 import com.supplylink.services.AuthService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -31,13 +32,15 @@ public class AuthController {
     private VerificationTokenRepository verificationTokenRepository;
     @Autowired
     private UserRepository userRepository;
+    private ModelMapper modelMapper;
 
     // Register User
     @PostMapping("/registerUser")
     public ResponseEntity<ApiResponse<UserRegistrationResDTO>> register(
             @Valid @RequestBody UserRegistrationReqDTO userRegistrationReqDTO) {
         try {
-            UserRegistrationResDTO registeredUser = authService.registerUser(userRegistrationReqDTO);
+            UserRegistrationResDTO registeredUser = modelMapper.map(authService.registerUser(userRegistrationReqDTO), UserRegistrationResDTO.class);
+
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(ApiResponse.success("User registered successfully", registeredUser));

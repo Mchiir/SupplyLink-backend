@@ -1,14 +1,12 @@
 package com.supplylink.services.impl;
 
 import com.supplylink.dtos.req.UserRegistrationReqDTO;
-import com.supplylink.dtos.res.UserRegistrationResDTO;
 import com.supplylink.validations.UserReqDTOValidator;
 import com.supplylink.exceptions.InvalidRequestException;
 import com.supplylink.models.User;
 import com.supplylink.repositories.UserRepository;
 import com.supplylink.services.UserService;
 import jakarta.transaction.Transactional;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,16 +21,13 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserReqDTOValidator validator;
 
     public UserServiceImpl(UserRepository userRepository,
-                           ModelMapper modelMapper,
                            PasswordEncoder passwordEncoder,
                            UserReqDTOValidator validator) {
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.validator = validator;
     }
@@ -43,10 +38,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRegistrationResDTO getUserById(UUID id) {
-        User user = userRepository.findById(id)
+    public User getUserById(UUID id) {
+         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return modelMapper.map(user, UserRegistrationResDTO.class);
     }
 
     @Override
@@ -76,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
         @Override
-    public UserRegistrationResDTO updateUser(UUID id, UserRegistrationReqDTO userRegistrationReqDTO) {
+    public User updateUser(UUID id, UserRegistrationReqDTO userRegistrationReqDTO) {
         try{
             // Validate input first
             validator.validate(userRegistrationReqDTO);
@@ -109,7 +103,7 @@ public class UserServiceImpl implements UserService {
             }
 
             User updatedUser = userRepository.save(existingUser);
-            return modelMapper.map(updatedUser, UserRegistrationResDTO.class);
+            return updatedUser;
         } catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
