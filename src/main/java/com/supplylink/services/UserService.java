@@ -14,8 +14,8 @@ import java.util.UUID;
 @Service
 public interface UserService {
     Page<User> getAllUsers(Pageable pageable);
-    UserRegistrationResDTO getUserById(UUID id);
-    UserRegistrationResDTO updateUser(UUID id, UserRegistrationReqDTO userRegistrationReqDTO);
+    User getUserById(UUID id);
+    User updateUser(UUID id, UserRegistrationReqDTO userRegistrationReqDTO);
     void deleteUser(UUID id);
     User getUserByEmail(String email);
     User getUserByPhoneNumber(String phoneNumber);

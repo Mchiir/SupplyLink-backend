@@ -6,7 +6,8 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.Date;
 import java.util.UUID;
 
-public class ProductSpecification {
+public class
+ProductSpecification {
 
     public static Specification<Product> hasCategory(UUID categoryId) {
         return (root, query, cb) -> categoryId == null ? null :

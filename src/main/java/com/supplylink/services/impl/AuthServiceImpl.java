@@ -4,7 +4,6 @@ import com.supplylink.auth.JwtTokenProvider;
 import com.supplylink.dtos.req.UserLoginReqDTO;
 import com.supplylink.dtos.LocationDTO;
 import com.supplylink.dtos.req.UserRegistrationReqDTO;
-import com.supplylink.dtos.res.UserRegistrationResDTO;
 import com.supplylink.exceptions.InvalidRequestException;
 import com.supplylink.models.Location;
 import com.supplylink.models.Role;
@@ -141,7 +140,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public UserRegistrationResDTO registerUser(UserRegistrationReqDTO userRegistrationReqDTO) {
+    public User registerUser(UserRegistrationReqDTO userRegistrationReqDTO) {
         try {
             userReqDTOValidator.validate(userRegistrationReqDTO);
 
@@ -159,6 +158,7 @@ public class AuthServiceImpl implements AuthService {
             Location location = new Location(locationDTO.getDistrict(), locationDTO.getProvince(), locationDTO.getCountry());
 
             User newUser = modelMapper.map(userRegistrationReqDTO, User.class);
+
             newUser.setLocation(location);
             var regularUserRole = new Role("ROLE_USER");
             newUser.setRoles(Set.of(regularUserRole));
@@ -183,8 +183,7 @@ public class AuthServiceImpl implements AuthService {
             if(savedUser.getEmail() != null && !savedUser.getEmail().isEmpty())
                 emailService.sendVerificationEmail(savedUser, token);
 
-            return modelMapper.map(savedUser, UserRegistrationResDTO.class);
-
+            return savedUser;
         } catch (DataIntegrityViolationException ex) {
             throw new InvalidRequestException("Registration failed: " + ex.getMostSpecificCause().getMessage());
         } catch (Exception e) {
